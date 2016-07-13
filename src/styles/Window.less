@@ -1,0 +1,40 @@
+.wm-window {
+  min-height: 32px;
+  max-height: 100%;
+  background: lightgray;
+  transform: translateZ(0);
+  border-spacing: 0;
+}
+
+.wm-window-top {height: 4px;}
+.wm-window-titlerow {height: 20px;}
+.wm-window-middle {height: auto;}
+.wm-window-bottom {height: 4px;}
+.wm-window-left {padding: 0; width: 4px;}
+.wm-window-center {padding: 0; width: auto; position:relative;}
+.wm-window-right {padding: 0; width: 4px;}
+
+.wm-window-titlebar {display: flex;}
+.wm-window-title {flex: auto 1 1; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;}
+.wm-window-buttons {flex: 60px 0 0;}
+
+.wm-window-button-minimize,
+.wm-window-button-maximize,
+.wm-window-button-close
+{
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  vertical-align: top;
+  text-align: center;
+  margin-left: 4px;
+  background: #444;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.wm-window-button-minimize:before {content: '_';}
+.wm-window-button-maximize:before {content: '^';}
+.wm-window-button-close:before {content: 'x';}
+
+.wm-window-content {width: 100%; height: 100%; background-color: white;}
