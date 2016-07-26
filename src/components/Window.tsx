@@ -1,12 +1,12 @@
 import * as React from "react";
-import {WindowState} from "../stores/WindowState";
 import {Action} from "redux/index";
 import "styles/Window.less";
-import {dragStart} from "../actions/DragAndDrop";
 import {DRAG_WINDOW, DragWindowActionArgs} from "../actions/Window";
 import * as shallowCompare from "react-addons-shallow-compare";
 import ReactChild = __React.ReactChild;
 import {makeMemoizer, Memoizer} from "../utils/makeMemoizer";
+import {WindowState} from "../reducers/WindowReducer";
+import {dragStart} from "../actions/Drag";
 
 interface WindowProps {
     window: WindowState,

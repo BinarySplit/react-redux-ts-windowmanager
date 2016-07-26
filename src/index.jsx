@@ -4,10 +4,13 @@ import { Provider } from 'react-redux';
 import { configureStore } from './stores';
 import App from './containers/App';
 
-declare const process:any;
-declare const window:any;
+require('file?name=react.js!../node_modules/react/dist/react.min.js');
+require('file?name=react-dom.js!../node_modules/react-dom/dist/react-dom.min.js');
+
+
 if(process.env.NODE_ENV !== 'production') {
-    window.Perf = require('react-addons-perf')
+    window.Perf = require('react-addons-perf');
+    window.Perf.start();
 }
 
 const store = configureStore();

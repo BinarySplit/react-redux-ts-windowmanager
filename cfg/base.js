@@ -38,5 +38,9 @@ module.exports = {
       config: `${defaultSettings.srcPath}/config/` + process.env.REACT_WEBPACK_ENV
     }
   },
+  externals: {
+    "react": "React",
+    "react-dom": "ReactDOM"
+  },
   module: {}
 };

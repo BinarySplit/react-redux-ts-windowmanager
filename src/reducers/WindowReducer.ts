@@ -1,8 +1,17 @@
-import {WindowState} from "../stores/WindowState";
-import {DRAG, DragAction} from "../actions/DragAndDrop";
 import {isDragWindowAction} from "../actions/Window";
+import {DRAG} from "../actions/Drag";
 
-export default function(state:WindowState, action:any):WindowState {
+export const enum WindowVisibility { Normal, Maximized, Minimized }
+
+export interface WindowState {
+    windowId: number,
+    component: string,
+    visibility: WindowVisibility,
+    pos: [number, number],
+    size: [number, number]
+}
+
+export function WindowReducer(state:WindowState, action:any):WindowState {
     switch(action.type) {
         case DRAG: {
             if(isDragWindowAction(action)) {

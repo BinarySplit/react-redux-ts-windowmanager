@@ -2,7 +2,7 @@
 
 let path = require('path');
 let webpack = require('webpack');
-
+var CompressionPlugin = require("compression-webpack-plugin");
 let baseConfig = require('./base');
 let defaultSettings = require('./defaults');
 
@@ -10,9 +10,9 @@ let defaultSettings = require('./defaults');
 let BowerWebpackPlugin = require('bower-webpack-plugin');
 
 let config = Object.assign({}, baseConfig, {
-  entry: path.join(__dirname, '../src/index'),
+  entry: ['./src/index'],
   cache: false,
-  devtool: 'sourcemap',
+  devtool: false, //'source-map',
   plugins: [
     new webpack.optimize.DedupePlugin(),
     new webpack.DefinePlugin({
@@ -21,10 +21,18 @@ let config = Object.assign({}, baseConfig, {
     new BowerWebpackPlugin({
       searchResolveModulesDirectories: false
     }),
-    new webpack.optimize.UglifyJsPlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.AggressiveMergingPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.optimize.LimitChunkCountPlugin({maxChunks: 1}),
+    new webpack.optimize.AggressiveMergingPlugin({minSizeReduce: 1}),
+    new webpack.optimize.UglifyJsPlugin({
+      //compress: {warnings: true}
+    }),
+    new CompressionPlugin({
+      asset: "[path].gz[query]",
+      algorithm: "gzip",
+      test: /\.js$|\.html$/,
+      minRatio: 0.95
+    }),
+    new webpack.optimize.OccurenceOrderPlugin()
   ],
   module: defaultSettings.getDefaultModules()
 });

@@ -1,5 +1,5 @@
 import {Action} from "redux/index";
-import {DragAction, DRAG_START, DRAG, DRAG_END} from "./DragAndDrop";
+import {DragAction, DRAG_START, DRAG, DRAG_END} from "./Drag";
 
 export const CREATE_WINDOW = "CREATE_WINDOW";
 export const DRAG_WINDOW = "DRAG_WINDOW";

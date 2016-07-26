@@ -1,10 +1,13 @@
 import {Action} from "redux/index";
-import {DragParams} from "../stores/index";
-import {DragAction, DRAG_START, DRAG_END} from "../actions/DragAndDrop";
+import {DragAction, DRAG_START, DRAG_END} from "../actions/Drag";
 
+export interface DragParams {
+    dragType: string,
+    initialPos: [number, number],
+    args: any
+}
 
-
-export default function(state: DragParams, action:Action):DragParams {
+export function DragReducer(state: DragParams, action:Action):DragParams {
     switch(action.type) {
         case DRAG_START: {
             let {dragType, initialPos} = action as DragAction;

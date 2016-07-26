@@ -1,43 +1,16 @@
 import * as redux from 'redux';
-import {WindowState, WindowListState, WindowVisibility} from "./WindowState";
-import {combinedReducer} from '../reducers';
+import {combinedReducer, MainState} from '../reducers';
 import {Reducer} from "redux/index";
-import {Action} from "redux/index";
 import {Store} from "redux/index";
 import {Unsubscribe} from "redux/index";
 
 declare var module: {hot:any};
 
-export interface DragParams {
-    dragType: string,
-    initialPos: [number, number],
-    args: any
-}
-
-export interface MainState {
-    windows: WindowListState,
-    dragParams: DragParams,
-    actions: string[]
-}
-
-let initialWindows:WindowState[] = [];
-for(var i = 0; i < 100; i++) {
-    initialWindows.push({
-        windowId: -i,
-        component: "foo",
-        visibility: WindowVisibility.Normal,
-        pos: [i*10,(i%10)*100],
-        size: [100, 100]
-    });
-}
-
-const initialState:MainState = {
-    windows: initialWindows,
-    dragParams: null,
-    actions: []
-};
-
-
+/**
+ * Wrapper for Redux's subscribers that debounces and only calls the update function once per requestAnimationFrame
+ * @param store
+ * @returns {({}&Store<any>&{subscribe: ((listener:()=>void)=>Unsubscribe)})|any}
+ */
 function reactRenderDebounceWrapper<S>(store:Store<S>):Store<S> {
     let currentListeners: (()=>void)[] = [];
     let nextListeners = currentListeners;
@@ -59,8 +32,10 @@ function reactRenderDebounceWrapper<S>(store:Store<S>):Store<S> {
             //Pre-emptively request the next animation frame as well, just in case
             nextAnimationFrame = requestAnimationFrame(() => {
                 if(hasUpdates) {
+                    console.log("hit");
                     updateListeners();
                 } else {
+                    console.log("miss");
                     nextAnimationFrame = null;
                 }
             });
@@ -95,7 +70,7 @@ function reactRenderDebounceWrapper<S>(store:Store<S>):Store<S> {
 
 }
 
-export function configureStore(state: MainState = initialState):Store<MainState> {
+export function configureStore(state?: MainState):Store<MainState> {
     const store = redux.createStore<MainState>(combinedReducer, state);
 
     if (module.hot) {

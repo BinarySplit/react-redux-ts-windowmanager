@@ -18,30 +18,34 @@ function getDefaultModules() {
     return {
         preLoaders: [
             {
-                test: /\.(js|jsx)$/,
-                include: srcPath,
-                loader: 'eslint-loader'
-            }
+                test: /\.(ts|tsx)$/,
+                loader: "babel-loader!ts-loader"
+            },
+
         ],
         loaders: [
+            {
+                test: /\.js$/,
+                loader: 'babel-loader'
+            },
             {
                 test: /\.css$/,
                 loader: 'style-loader!css-loader'
             },
             {
-                test: /\.sass/,
+                test: /\.sass$/,
                 loader: 'style-loader!css-loader!sass-loader?outputStyle=expanded&indentedSyntax'
             },
             {
-                test: /\.scss/,
+                test: /\.scss$/,
                 loader: 'style-loader!css-loader!sass-loader?outputStyle=expanded'
             },
             {
-                test: /\.less/,
+                test: /\.less$/,
                 loader: 'style-loader!css-loader!less-loader'
             },
             {
-                test: /\.styl/,
+                test: /\.styl$/,
                 loader: 'style-loader!css-loader!stylus-loader'
             },
             {
@@ -51,10 +55,6 @@ function getDefaultModules() {
             {
                 test: /\.(mp4|ogg|svg)$/,
                 loader: 'file-loader'
-            },
-            {
-                test: /\.tsx?$/,
-                loader: "ts-loader"
             }
         ]
         /*externals: {

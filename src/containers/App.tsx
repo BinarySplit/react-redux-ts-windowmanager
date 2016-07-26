@@ -1,6 +1,5 @@
 import * as React from 'react';
 let {Component} = React;
-import { connect } from 'react-redux';
 import Main from '../components/WindowManager';
 
 

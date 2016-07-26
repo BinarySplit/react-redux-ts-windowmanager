@@ -6,7 +6,7 @@
   "main": "",
   "scripts": {
     "clean": "rimraf dist/*",
-    "copy": "copyfiles -f ./src/index.html ./src/favicon.ico ./dist",
+    "copy": "copyfiles -f ./src/index.html ./src/favicon.ico ./node_modules/react/dist/react.js ./node_modules/react-dom/dist/react-dom.js ./dist",
     "dist": "npm run copy & webpack --env=dist",
     "lint": "eslint ./src",
     "posttest": "npm run lint",
@@ -67,6 +67,7 @@
     "webpack-dev-server": "^1.12.0"
   },
   "dependencies": {
+    "compression-webpack-plugin": "^0.3.1",
     "core-js": "^2.0.0",
     "normalize.css": "^4.0.0",
     "react": "^15.0.0",

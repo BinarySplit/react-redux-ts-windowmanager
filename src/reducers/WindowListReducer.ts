@@ -1,10 +1,21 @@
 import {Action} from "redux/index";
 import {isWindowAction, CREATE_WINDOW, CreateWindowAction} from "../actions/Window";
-import WindowReducer from "./WindowReducer"
-import {WindowVisibility, WindowListState, WindowState} from "../stores/WindowState";
+import {WindowState, WindowReducer, WindowVisibility} from "./WindowReducer";
 
+export type WindowListState = WindowState[]; //Ordered from back to front
 
-export default function(state: WindowListState = [], action:Action) {
+let initialWindows:WindowState[] = [];
+for(var i = 0; i < 100; i++) {
+    initialWindows.push({
+        windowId: -i,
+        component: "foo",
+        visibility: WindowVisibility.Normal,
+        pos: [i*10,(i%10)*100],
+        size: [100, 100]
+    });
+}
+
+export function WindowListReducer(state: WindowListState = initialWindows, action:Action) {
     switch(action.type) {
         case CREATE_WINDOW: {
             let {windowId, component} = action as CreateWindowAction;
