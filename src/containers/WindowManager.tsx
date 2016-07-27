@@ -1,10 +1,10 @@
 import 'normalize.css/normalize.css';
-import 'styles/App.css';
+import '../styles/App.css';
 import * as React from 'react';
 import {connect} from "react-redux";
 import {Action} from "redux/index";
 import {createWindow} from "../actions/Window";
-import Window from "./Window";
+import Window from "../components/Window";
 import {makeMemoizer, Memoizer} from "../utils/makeMemoizer";
 import {WindowListState} from "../reducers/WindowListReducer";
 import {DragParams} from "../reducers/DragReducer";

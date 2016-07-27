@@ -7,6 +7,10 @@ Thoughts:
     * TypeScript resists metaprogramming - no introspection or dynamic type creation
     * TypeScript + Redux is a bad combo:
         ** the @connect decorator doesn't play nicely with types - the decorated class can't see the added fields
-            *** workaround: add "props" declaration to class
+            *** workaround: don't use the decorator
         ** the "makeActionCreator" pattern doesn't play nicely with types
-        **
+    * http://marmelab.com/blog/2015/12/17/react-directory-structure.html
+        ** IMO, this solves a lot of problems. It will be my preferred structure for new Redux projects
+        ** It's almost essential for dividing code into bundles
+            *** Not sure how bundling and on-demand-loading Redux reducers & action creators would work though...
+            * https://github.com/erikras/ducks-modular-redux

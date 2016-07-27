@@ -1,6 +1,6 @@
 import * as React from 'react';
 let {Component} = React;
-import Main from '../components/WindowManager';
+import Main from './WindowManager';
 
 
 export default class App extends Component<{},{}> {
