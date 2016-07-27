@@ -21,10 +21,11 @@ export function WindowReducer(state:WindowState, action:any):WindowState {
                     pos: [x + dx, y + dy] as [number, number]
                 });
             } else if(isResizeWindowAction(action)) {
-                console.log(action);
                 let {side, initialWindowPos: [x,y], initialWindowSize: [w,h], deltaPos: [dx,dy]} = action;
                 let newX = x, newY = y, newW = w, newH = h;
                 let minWidth = 100, minHeight = 50;
+
+                //Horizontal resizing
                 if(side == ResizeSide.L || side == ResizeSide.TL || side == ResizeSide.BL) {
                     newX = Math.min(x + dx, x + w - minWidth);
                     newW = Math.max(w - dx, minWidth);
@@ -32,11 +33,12 @@ export function WindowReducer(state:WindowState, action:any):WindowState {
                     newW = Math.max(w + dx, minWidth);
                 }
 
+                //Vertical resizing
                 if(side == ResizeSide.T || side == ResizeSide.TL || side == ResizeSide.TR) {
                     newY = Math.min(y + dy, y + h - minHeight);
                     newH = Math.max(h - dy, minHeight);
                 } else if(side == ResizeSide.B || side == ResizeSide.BL || side == ResizeSide.BR) {
-                    newH = Math.max(y + dy, minHeight);
+                    newH = Math.max(h + dy, minHeight);
                 }
 
 

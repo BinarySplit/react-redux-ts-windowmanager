@@ -1,17 +1,17 @@
 import {Action} from "redux/index";
-import {isWindowAction, CREATE_WINDOW, CreateWindowAction} from "../actions/Window";
+import {isWindowAction, CREATE_WINDOW, CreateWindowAction, CLOSE_WINDOW, WindowAction} from "../actions/Window";
 import {WindowState, WindowReducer, WindowVisibility} from "./WindowReducer";
 
 export type WindowListState = WindowState[]; //Ordered from back to front
 
 let initialWindows:WindowState[] = [];
-for(var i = 0; i < 100; i++) {
+for(var i = 0; i < 10; i++) {
     initialWindows.push({
         windowId: -i,
         component: "foo",
         visibility: WindowVisibility.Normal,
-        pos: [i*10,(i%10)*100],
-        size: [100, 100]
+        pos: [i*50,(i%10)*50],
+        size: [400, 300]
     });
 }
 
@@ -23,10 +23,20 @@ export function WindowListReducer(state: WindowListState = initialWindows, actio
                 windowId, component,
                 visibility: WindowVisibility.Normal,
                 pos: [0,0],
-                size: [100,100]
+                size: [400,300]
             };
             let newList = state.concat(newWindow);
             //TODO: sort
+            return newList;
+        }
+        case CLOSE_WINDOW: {
+            let closeAction = action as WindowAction;
+
+            let newList = state.slice(0);
+            let idx = newList.findIndex(w => w.windowId == closeAction.windowId);
+            if(idx == -1) throw new Error("Invalid windowId in action:" + JSON.stringify(action));
+            newList.splice(idx, 1);
+
             return newList;
         }
 
@@ -37,7 +47,6 @@ export function WindowListReducer(state: WindowListState = initialWindows, actio
                 if(idx == -1) throw new Error("Invalid windowId in action:" + JSON.stringify(action));
                 //Move to the end of newList
                 newList.push(WindowReducer(newList.splice(idx, 1)[0], action));
-                //TODO: sort
                 return newList;
             }
             return state;

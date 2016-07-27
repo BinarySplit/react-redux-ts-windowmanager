@@ -26,12 +26,12 @@ let config = Object.assign({}, baseConfig, {
     new webpack.optimize.UglifyJsPlugin({
       //compress: {warnings: true}
     }),
-    new CompressionPlugin({
-      asset: "[path].gz[query]",
-      algorithm: "gzip",
-      test: /\.js$|\.html$/,
-      minRatio: 0.95
-    }),
+    // new CompressionPlugin({
+    //   asset: "[path].gz[query]",
+    //   algorithm: "gzip",
+    //   test: /\.js$|\.html$/,
+    //   minRatio: 0.95
+    // }),
     new webpack.optimize.OccurenceOrderPlugin(),
       new webpack.NoErrorsPlugin()
   ],

@@ -6,6 +6,7 @@ export function makeUniqueId(): number { return _uniqueIdCounter++ }
 
 //Consts
 export const CREATE_WINDOW = "CREATE_WINDOW";
+export const CLOSE_WINDOW = "CLOSE_WINDOW";
 export const DRAG_WINDOW = "DRAG_WINDOW";
 export const RESIZE_WINDOW = "RESIZE_WINDOW";
 
@@ -32,7 +33,10 @@ export type ResizeWindowAction = DragAction & WindowAction & ResizeWindowActionA
 
 //Action Creators
 export function createWindow(component: string): CreateWindowAction {
-    return { type: CREATE_WINDOW, windowId: makeUniqueId(), component }
+    return {type: CREATE_WINDOW, windowId: makeUniqueId(), component};
+}
+export function closeWindow(windowId: number): WindowAction {
+    return {type: CLOSE_WINDOW, windowId};
 }
 export function dragWindow(windowId: number, initialWindowPos: [number, number], event: DragEvent|__React.DragEvent): DragWindowAction {
     return dragStart(event, DRAG_WINDOW, {windowId, initialWindowPos});

@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Action} from "redux/index";
 import "styles/Window.less";
-import {DRAG_WINDOW, DragWindowActionArgs, dragWindow, ResizeSide, resizeWindow} from "../actions/Window";
+import {DRAG_WINDOW, DragWindowActionArgs, dragWindow, ResizeSide, resizeWindow, closeWindow} from "../actions/Window";
 import * as shallowCompare from "react-addons-shallow-compare";
 import ReactChild = __React.ReactChild;
 import {makeMemoizer, Memoizer} from "../utils/makeMemoizer";
@@ -44,6 +44,7 @@ class TableRow extends React.Component<TableRowProps, void> {
 interface TitleBarProps {
     title: string;
     onDragStart: __React.EventHandler<__React.DragEvent>;
+    onClose: ()=>any;
 }
 
 class TitleBar extends React.Component<TitleBarProps, void> {
@@ -51,13 +52,13 @@ class TitleBar extends React.Component<TitleBarProps, void> {
         return shallowCompare(this, nextProps, nextState);
     }
     render() {
-
-        return <div className="wm-window-titlebar" onDragStart={this.props.onDragStart} draggable={true}>
-            <div className="wm-window-title">{this.props.title}</div>
+        let {title, onDragStart, onClose} = this.props;
+        return <div className="wm-window-titlebar" onDragStart={onDragStart} draggable={true}>
+            <div className="wm-window-title">{title}</div>
             <div className="wm-window-buttons">
                 <div className="wm-window-button-minimize" />
                 <div className="wm-window-button-maximize" />
-                <div className="wm-window-button-close" />
+                <div className="wm-window-button-close" onClick={onClose} />
             </div>
         </div>
     }
@@ -70,6 +71,7 @@ export default class Window extends React.Component<WindowProps, void> {
         super(props);
         this.memoize = makeMemoizer();
         this.onWindowDragStart = this.onWindowDragStart.bind(this);
+        this.onWindowClose = this.onWindowClose.bind(this);
         for(var i = 0; i < 8; i++) {
             this.onWindowResizeStart[i] = this.onWindowResizeStartFn.bind(this, i);
         }
@@ -91,7 +93,9 @@ export default class Window extends React.Component<WindowProps, void> {
     onWindowDragStart(event:__React.DragEvent) {
         let {windowId, pos} = this.props.window;
         this.props.dispatch(dragWindow(windowId, pos, event));
-
+    }
+    onWindowClose() {
+        this.props.dispatch(closeWindow(this.props.window.windowId));
     }
     onWindowResizeStartFn(side:ResizeSide, event:__React.DragEvent) {
         let {windowId, pos, size} = this.props.window;
@@ -112,9 +116,9 @@ export default class Window extends React.Component<WindowProps, void> {
                 <TableRow className="wm-window-titlerow"
                           onDragLeft={this.onWindowResizeStart[ResizeSide.L]}
                           onDragRight={this.onWindowResizeStart[ResizeSide.R]}>
-                    {this.memoize("titlebar", [title, this.onWindowDragStart],
-                        (title, onDragStart) =>
-                            <TitleBar title={title} onDragStart={this.onWindowDragStart} />)}
+                    <TitleBar title={title}
+                              onDragStart={this.onWindowDragStart}
+                              onClose={this.onWindowClose} />
                 </TableRow>
                 <TableRow className="wm-window-middle"
                           onDragLeft={this.onWindowResizeStart[ResizeSide.L]}
