@@ -10,18 +10,18 @@
   max-height: 100%;
   background: lightgray;
   transform: translateZ(0);
-  contain:  layout paint;
+  contain: layout paint;
   border-spacing: 0;
 
-  &-top {background-image: @border-t;}
-  &-left {background-image: @border-l;}
-  &-bottom {background-image: @border-b;}
-  &-right {background-image: @border-r;}
+  &-top {background-image: @border-t;cursor:ns-resize;}
+  &-right {background-image: @border-r;cursor:ew-resize;}
+  &-bottom {background-image: @border-b;cursor:ns-resize;}
+  &-left {background-image: @border-l;cursor:ew-resize;}
 
-  &-top>&-left {background-image: @border-t, @border-l;}
-  &-top>&-right {background-image: @border-t, @border-r;}
-  &-bottom>&-left {background-image: @border-b, @border-l;}
-  &-bottom>&-right {background-image: @border-b, @border-r;}
+  &-top>&-left {background-image: @border-t, @border-l;cursor:nwse-resize;}
+  &-top>&-right {background-image: @border-t, @border-r;cursor:nesw-resize;}
+  &-bottom>&-right {background-image: @border-b, @border-r;cursor:nwse-resize;}
+  &-bottom>&-left {background-image: @border-b, @border-l;cursor:nesw-resize;}
 
 
   &-top, &-bottom {

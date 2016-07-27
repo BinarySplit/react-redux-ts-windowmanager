@@ -13,7 +13,7 @@ export interface DragAction extends Action {
     pos: [number, number]
 }
 
-export function dragStart<T>(event: DragEvent|__React.DragEvent, dragType: string, args:T): DragAction {
+export function dragStart<T>(event: DragEvent|__React.DragEvent, dragType: string, args:T): DragAction & T {
     return Object.assign({}, args, {
         type: DRAG_START,
         dragType,

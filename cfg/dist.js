@@ -32,8 +32,13 @@ let config = Object.assign({}, baseConfig, {
       test: /\.js$|\.html$/,
       minRatio: 0.95
     }),
-    new webpack.optimize.OccurenceOrderPlugin()
+    new webpack.optimize.OccurenceOrderPlugin(),
+      new webpack.NoErrorsPlugin()
   ],
+  externals: {
+    "react": "React",
+    "react-dom": "ReactDOM"
+  },
   module: defaultSettings.getDefaultModules()
 });
 

@@ -32,10 +32,8 @@ function reactRenderDebounceWrapper<S>(store:Store<S>):Store<S> {
             //Pre-emptively request the next animation frame as well, just in case
             nextAnimationFrame = requestAnimationFrame(() => {
                 if(hasUpdates) {
-                    console.log("hit");
                     updateListeners();
                 } else {
-                    console.log("miss");
                     nextAnimationFrame = null;
                 }
             });
