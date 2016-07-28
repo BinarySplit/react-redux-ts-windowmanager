@@ -8,7 +8,7 @@ let initialWindows:WindowState[] = [];
 for(var i = 0; i < 10; i++) {
     initialWindows.push({
         windowId: -i,
-        component: "foo",
+        component: "AboutThisSite",
         visibility: WindowVisibility.Normal,
         pos: [i*50,(i%10)*50],
         size: [400, 300]

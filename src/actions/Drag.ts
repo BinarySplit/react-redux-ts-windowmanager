@@ -13,7 +13,7 @@ export interface DragAction extends Action {
     pos: [number, number]
 }
 
-export function dragStart<T>(event: DragEvent|__React.DragEvent, dragType: string, args:T): DragAction & T {
+export function dragStart<T>(event: MouseEvent|__React.MouseEvent, dragType: string, args:T): DragAction & T {
     return Object.assign({}, args, {
         type: DRAG_START,
         dragType,
@@ -22,7 +22,7 @@ export function dragStart<T>(event: DragEvent|__React.DragEvent, dragType: strin
         pos: [event.pageX, event.pageY] as [number, number]
     });
 }
-export function drag(event: DragEvent|__React.DragEvent, dragParams: DragParams): DragAction {
+export function drag(event: MouseEvent|__React.MouseEvent, dragParams: DragParams): DragAction {
     let {dragType, initialPos, args} = dragParams;
     return Object.assign({}, args, {
         type: DRAG,
@@ -32,7 +32,7 @@ export function drag(event: DragEvent|__React.DragEvent, dragParams: DragParams)
         pos: [event.pageX, event.pageY] as [number, number]
     });
 }
-export function dragEnd(event: DragEvent|__React.DragEvent, dragParams: DragParams): DragAction {
+export function dragEnd(event: MouseEvent|__React.MouseEvent, dragParams: DragParams): DragAction {
     let {dragType, initialPos, args} = dragParams;
     return Object.assign({}, args, {
         type: DRAG_END,

@@ -1,4 +1,10 @@
 /* Base Application Styles */
+html, body, #app, .wm-window-manager {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   background: #222;
 }
@@ -18,10 +24,4 @@ body {
   border: 1px solid #000;
   border-width: 1px 0;
   background: #666;
-}
-
-.wm-window-manager {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
 }

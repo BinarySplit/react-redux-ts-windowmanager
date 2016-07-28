@@ -34,40 +34,35 @@ class WindowManagerComponent extends React.Component<WindowManagerProps, {}> {
     static displayName: "WindowManagerComponent";
     constructor(props:WindowManagerProps) {
         super(props);
-        this.onDragEvent = this.onDragEvent.bind(this);
+        this.onMouseEvent = this.onMouseEvent.bind(this);
         this.onCreateWindow = this.onCreateWindow.bind(this);
         this.memoize = makeMemoizer();
     }
     memoize: Memoizer;
-    onDragEvent(event:__React.DragEvent) {
+    onMouseEvent(event:__React.MouseEvent) {
         let {dragParams, dispatch} = this.props;
         //An event with the coordinates of the top of the browser's UI window ([0, -30]) is created
         // right before dragend if drag events haven't had their default prevented, or the browser is lagging
         if(event.pageY < 0) return;
+        if(typeof event.button === "number" && event.button > 0) return;
         if(dragParams != null) {
-            dispatch(event.type == "drag"
+            dispatch(event.type == "mousemove"
                      ? drag(event, dragParams)
                      : dragEnd(event, dragParams));
+            event.preventDefault();
         }
-        let dt = event.dataTransfer;
-        dt.dropEffect = "none";
-        dt.effectAllowed = "none";
-        dt.clearData();
-        if(typeof (dt as any).setDragImage === "function")
-            (dt as any).setDragImage(emptyDragImage, 0, 0);
-        event.preventDefault();
     }
-    onCreateWindow() {
+    onCreateWindow(event:__React.MouseEvent) {
+        if(typeof event.button === "number" && event.button > 0) return;
+
         this.props.dispatch(createWindow("foo"));
     }
     render() {
         let {windows, dispatch} = this.props;
         return (
             <div className="wm-window-manager"
-                 onDrag={this.onDragEvent}
-                 onDragEnd={this.onDragEvent}
-                 onDragOver={eventPreventDefault}
-                 onDrop={eventPreventDefault}>
+                 onMouseMove={this.onMouseEvent}
+                 onMouseUp={this.onMouseEvent}>
                 <div id="windows">
                     {windows.map((w) =>
                         this.memoize("window" + w.windowId, [w, dispatch],

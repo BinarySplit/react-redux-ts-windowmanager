@@ -1,12 +1,14 @@
 import * as React from "react";
 import {Action} from "redux/index";
 import "styles/Window.less";
-import {DRAG_WINDOW, DragWindowActionArgs, dragWindow, ResizeSide, resizeWindow, closeWindow} from "../actions/Window";
+import {dragWindow, ResizeSide, resizeWindow, closeWindow} from "../actions/Window";
 import * as shallowCompare from "react-addons-shallow-compare";
-import ReactChild = __React.ReactChild;
 import {makeMemoizer, Memoizer} from "../utils/makeMemoizer";
 import {WindowState} from "../reducers/WindowReducer";
-import {dragStart} from "../actions/Drag";
+import {AboutThisSiteComponent} from "./AboutThisSite";
+import ComponentClass = __React.ComponentClass;
+import SFC = __React.SFC;
+import ClassType = __React.ClassType;
 
 interface WindowProps {
     window: WindowState,
@@ -15,10 +17,13 @@ interface WindowProps {
 
 interface TableRowProps {
     className: string;
-    //children?: ReactChild;
-    onDragLeft?: __React.EventHandler<__React.DragEvent>;
-    onDragCenter?: __React.EventHandler<__React.DragEvent>;
-    onDragRight?: __React.EventHandler<__React.DragEvent>;
+    onDragLeft?: __React.MouseEventHandler;
+    onDragCenter?: __React.MouseEventHandler;
+    onDragRight?: __React.MouseEventHandler;
+}
+
+let components: {[key:string]: ComponentClass<any> | SFC<any> | ClassType<any, any, any>}  = {
+    AboutThisSite: AboutThisSiteComponent
 }
 
 class TableRow extends React.Component<TableRowProps, void> {
@@ -29,21 +34,17 @@ class TableRow extends React.Component<TableRowProps, void> {
     render() {
         let {className, children, onDragLeft, onDragCenter, onDragRight} = this.props;
 
-        let leftProps = onDragLeft ? {draggable: true, onDragStart: onDragLeft} : null;
-        let centerProps = onDragCenter ? {draggable: true, onDragStart: onDragCenter} : null;
-        let rightProps = onDragRight ? {draggable: true, onDragStart: onDragRight} : null;
-
         return <tr className={className}>
-            <td className="wm-window-left" {...leftProps}/>
-            <td className="wm-window-center" {...centerProps}>{children}</td>
-            <td className="wm-window-right"  {...rightProps}/>
+            <td className="wm-window-left" onMouseDown={onDragLeft}/>
+            <td className="wm-window-center" onMouseDown={onDragCenter}>{children}</td>
+            <td className="wm-window-right" onMouseDown={onDragRight}/>
         </tr>;
     }
 }
 
 interface TitleBarProps {
     title: string;
-    onDragStart: __React.EventHandler<__React.DragEvent>;
+    onDragStart: __React.MouseEventHandler;
     onClose: ()=>any;
 }
 
@@ -53,8 +54,8 @@ class TitleBar extends React.Component<TitleBarProps, void> {
     }
     render() {
         let {title, onDragStart, onClose} = this.props;
-        return <div className="wm-window-titlebar" onDragStart={onDragStart} draggable={true}>
-            <div className="wm-window-title">{title}</div>
+        return <div className="wm-window-titlebar">
+            <div className="wm-window-title" onMouseDown={onDragStart}>{title}</div>
             <div className="wm-window-buttons">
                 <div className="wm-window-button-minimize" />
                 <div className="wm-window-button-maximize" />
@@ -90,21 +91,25 @@ export default class Window extends React.Component<WindowProps, void> {
             height: size[1]
         };
     }
-    onWindowDragStart(event:__React.DragEvent) {
+    onWindowDragStart(event:__React.MouseEvent) {
+        if(typeof event.button === "number" && event.button > 0) return;
+
         let {windowId, pos} = this.props.window;
         this.props.dispatch(dragWindow(windowId, pos, event));
+        event.preventDefault();
     }
     onWindowClose() {
         this.props.dispatch(closeWindow(this.props.window.windowId));
     }
-    onWindowResizeStartFn(side:ResizeSide, event:__React.DragEvent) {
+    onWindowResizeStartFn(side:ResizeSide, event:__React.MouseEvent) {
+        if(typeof event.button === "number" && event.button > 0) return;
+
         let {windowId, pos, size} = this.props.window;
         this.props.dispatch(resizeWindow(windowId, side, pos, size, event));
     }
-    onWindowResizeStart: ((event:__React.DragEvent) => any)[] = [];
+    onWindowResizeStart: ((event:__React.MouseEvent) => any)[] = [];
     render() {
-        let {windowId, pos, size} = this.props.window;
-        let content = "content";
+        let {windowId, pos, component, size} = this.props.window;
         let title = "title";
 
         return (<table className="wm-window" key={windowId} style={Window.absolutePosition(pos, size)}>
@@ -123,8 +128,8 @@ export default class Window extends React.Component<WindowProps, void> {
                 <TableRow className="wm-window-middle"
                           onDragLeft={this.onWindowResizeStart[ResizeSide.L]}
                           onDragRight={this.onWindowResizeStart[ResizeSide.R]}>
-                    {this.memoize("content", [content],
-                        (content) => <div className="wm-window-content">{content}</div>)}
+                    {this.memoize("content", [components[component]],
+                        (C:any) => <div className="wm-window-content">{C && <C />}</div>)}
                 </TableRow>
                 <TableRow className="wm-window-bottom"
                           onDragLeft={this.onWindowResizeStart[ResizeSide.BL]}
