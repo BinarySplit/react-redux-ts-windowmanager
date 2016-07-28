@@ -15,7 +15,8 @@ export interface WindowAction extends Action {
     windowId: number
 }
 export interface CreateWindowAction extends WindowAction {
-    component: string
+    componentType: string,
+    title: string
 }
 export interface DragWindowActionArgs {
     initialWindowPos: [number, number]
@@ -32,8 +33,8 @@ export interface ResizeWindowActionArgs {
 export type ResizeWindowAction = DragAction & WindowAction & ResizeWindowActionArgs;
 
 //Action Creators
-export function createWindow(component: string): CreateWindowAction {
-    return {type: CREATE_WINDOW, windowId: makeUniqueId(), component};
+export function createWindow(componentType: string, title: string): CreateWindowAction {
+    return {type: CREATE_WINDOW, windowId: makeUniqueId(), componentType, title};
 }
 export function closeWindow(windowId: number): WindowAction {
     return {type: CLOSE_WINDOW, windowId};

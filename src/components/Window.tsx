@@ -109,8 +109,10 @@ export default class Window extends React.Component<WindowProps, void> {
     }
     onWindowResizeStart: ((event:__React.MouseEvent) => any)[] = [];
     render() {
-        let {windowId, pos, component, size} = this.props.window;
-        let title = "title";
+        let {windowId, pos, componentType, title, size} = this.props.window;
+        let Component = components[componentType];
+        let content = this.memoize("content", [Component],
+            (Component) => <div className="wm-window-content">{Component && <Component />}</div>);
 
         return (<table className="wm-window" key={windowId} style={Window.absolutePosition(pos, size)}>
             <tbody>
@@ -128,8 +130,7 @@ export default class Window extends React.Component<WindowProps, void> {
                 <TableRow className="wm-window-middle"
                           onDragLeft={this.onWindowResizeStart[ResizeSide.L]}
                           onDragRight={this.onWindowResizeStart[ResizeSide.R]}>
-                    {this.memoize("content", [components[component]],
-                        (C:any) => <div className="wm-window-content">{C && <C />}</div>)}
+                    {content}
                 </TableRow>
                 <TableRow className="wm-window-bottom"
                           onDragLeft={this.onWindowResizeStart[ResizeSide.BL]}

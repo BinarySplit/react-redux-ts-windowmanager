@@ -102,3 +102,68 @@
   }
 
 }
+
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+  background-color: @color-primary-0;
+}
+
+@button-bg: @color-primary-1;
+@button-fg: @color-primary-3;
+::-webkit-scrollbar-button:end:increment,
+::-webkit-scrollbar-button:start:decrement {
+  display: block;
+  background-color: @button-bg;
+  width: 16px;
+  height: 16px;
+}
+::-webkit-scrollbar-button:start:increment,
+::-webkit-scrollbar-button:end:decrement {
+  display: none;
+}
+::-webkit-scrollbar-corner {
+  background-image:
+          linear-gradient(45deg, @button-fg 8px, transparent 8px),
+          linear-gradient(135deg, @button-fg 8px, transparent 8px),
+          linear-gradient(225deg, @button-fg 8px, transparent 8px),
+          linear-gradient(315deg, @button-fg 8px, transparent 8px),
+          linear-gradient(0deg, @button-bg 0, @button-bg 0);
+}
+
+::-webkit-scrollbar-button:vertical:increment {
+  background-image:
+          linear-gradient(45deg, @button-bg 8px, transparent 8px),
+          linear-gradient(315deg, @button-bg 8px, transparent 8px),
+          linear-gradient(to top, @button-fg 10px, @button-bg 10px);
+}
+::-webkit-scrollbar-button:vertical:decrement {
+  background-image:
+          linear-gradient(135deg, @button-bg 8px, transparent 8px),
+          linear-gradient(225deg, @button-bg 8px, transparent 8px),
+          linear-gradient(to bottom, @button-fg 10px, @button-bg 10px);
+}
+::-webkit-scrollbar-button:horizontal:increment {
+  background-image:
+          linear-gradient(225deg, @button-bg 8px, transparent 8px),
+          linear-gradient(315deg, @button-bg 8px, transparent 8px),
+          linear-gradient(to left, @button-fg 10px, @button-bg 10px);
+}
+::-webkit-scrollbar-button:horizontal:decrement {
+  background-image:
+          linear-gradient(45deg, @button-bg 8px, transparent 8px),
+          linear-gradient(135deg, @button-bg 8px, transparent 8px),
+          linear-gradient(to right, @button-fg 10px, @button-bg 10px);
+}
+
+::-webkit-scrollbar-track-piece:start {
+  background-color: @color-primary-2;
+}
+
+::-webkit-scrollbar-track-piece:end {
+  background-color: @color-primary-2;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: @color-primary-3;
+}

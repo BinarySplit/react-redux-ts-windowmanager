@@ -4,23 +4,49 @@ import {WindowState, WindowReducer, WindowVisibility} from "./WindowReducer";
 
 export type WindowListState = WindowState[]; //Ordered from back to front
 
-let initialWindows:WindowState[] = [];
-for(var i = 0; i < 10; i++) {
-    initialWindows.push({
-        windowId: -i,
-        component: "AboutThisSite",
+let initialWindows:WindowState[] = [
+    {
+        windowId: -1,
+        componentType: "",
+        title: "Foo Bar",
         visibility: WindowVisibility.Normal,
-        pos: [i*50,(i%10)*50],
+        pos: [200, 100],
         size: [400, 300]
-    });
-}
+    },
+    {
+        windowId: -2,
+        componentType: "",
+        title: "Baz Qux",
+        visibility: WindowVisibility.Normal,
+        pos: [400, 150],
+        size: [400, 300]
+    },
+    {
+        windowId: -3,
+        componentType: "AboutThisSite",
+        title: "About this site",
+        visibility: WindowVisibility.Normal,
+        pos: [300, 200],
+        size: [400, 300]
+    },
+];
+// for(var i = 0; i < 10; i++) {
+//     initialWindows.push({
+//         windowId: -i,
+//         componentType: "AboutThisSite",
+//         title: "About this site",
+//         visibility: WindowVisibility.Normal,
+//         pos: [i*50,(i%10)*50],
+//         size: [400, 300]
+//     });
+// }
 
 export function WindowListReducer(state: WindowListState = initialWindows, action:Action) {
     switch(action.type) {
         case CREATE_WINDOW: {
-            let {windowId, component} = action as CreateWindowAction;
+            let {windowId, componentType, title} = action as CreateWindowAction;
             let newWindow:WindowState = {
-                windowId, component,
+                windowId, componentType, title,
                 visibility: WindowVisibility.Normal,
                 pos: [0,0],
                 size: [400,300]

@@ -5,7 +5,8 @@ export const enum WindowVisibility { Normal, Maximized, Minimized }
 
 export interface WindowState {
     windowId: number,
-    component: string,
+    componentType: string,
+    title: string,
     visibility: WindowVisibility,
     pos: [number, number],
     size: [number, number]

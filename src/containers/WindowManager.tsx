@@ -55,7 +55,7 @@ class WindowManagerComponent extends React.Component<WindowManagerProps, {}> {
     onCreateWindow(event:__React.MouseEvent) {
         if(typeof event.button === "number" && event.button > 0) return;
 
-        this.props.dispatch(createWindow("foo"));
+        this.props.dispatch(createWindow("", "Title"));
     }
     render() {
         let {windows, dispatch} = this.props;
