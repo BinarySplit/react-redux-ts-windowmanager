@@ -51,9 +51,7 @@ export function WindowListReducer(state: WindowListState = initialWindows, actio
                 pos: [0,0],
                 size: [400,300]
             };
-            let newList = state.concat(newWindow);
-            //TODO: sort
-            return newList;
+            return state.concat(newWindow);
         }
         case CLOSE_WINDOW: {
             let closeAction = action as WindowAction;
