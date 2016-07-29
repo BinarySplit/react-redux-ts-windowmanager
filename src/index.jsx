@@ -15,10 +15,11 @@ if(process.env.NODE_ENV !== 'production') {
 const store = configureStore();
 
 
-
-render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('app')
-);
+if(typeof document !== "undefined") {
+    render(
+        <Provider store={store}>
+            <App />
+        </Provider>,
+        document.getElementById('app')
+    );
+}

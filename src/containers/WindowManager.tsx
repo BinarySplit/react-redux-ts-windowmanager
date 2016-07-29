@@ -14,21 +14,10 @@ import {WindowState} from "../reducers/WindowReducer";
 
 //const yeomanImage = require('../images/yeoman.png');
 
-const emptyDragImage = document.createElement("image");
-
 interface WindowManagerProps {
     windows: WindowListState,
     dragParams: DragParams
     dispatch: (a:Action) => Action; //Workaround for WebStorm error highlighting bug https://youtrack.jetbrains.com/issue/WEB-22374
-}
-
-function mapObject<TVal, TColl extends {[k:string]:TVal}, TResult>
-    (obj: TColl, fn:(val:TVal, key:string, coll:TColl) => TResult): TResult[] {
-    return Object.keys(obj).map(k=>fn(obj[k] as TVal, k, obj));
-}
-
-function eventPreventDefault(event:__React.SyntheticEvent) {
-    event.preventDefault();
 }
 
 class WindowManagerComponent extends React.Component<WindowManagerProps, {}> {

@@ -7,6 +7,7 @@
 'use strict';
 
 const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const srcPath = path.join(__dirname, '/../src');
 const dfltPort = 8000;
 
@@ -14,49 +15,46 @@ const dfltPort = 8000;
  * Get the default modules object for webpack
  * @return {Object}
  */
-function getDefaultModules() {
+function getDefaultModules(additionalPaths, isDev) {
+    let loaders = [
+        {
+            test: /\.js$/,
+            loader: 'babel-loader'
+        },
+        {
+            test: /\.css$/,
+            // loader: isDev
+            //     ? 'style-loader!css-loader'
+            loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+        },
+        {
+            test: /\.less$/,
+            // loader: isDev
+            //     ? 'style-loader!css-loader!less-loader'
+            loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
+        },
+        {
+            test: /\.(png|jpg|gif|woff|woff2)$/,
+            loader: 'url-loader?limit=8192'
+        },
+        {
+            test: /\.(js|jsx)$/,
+            loader: isDev ? 'react-hot!babel-loader' : 'babel',
+            include: [].concat(
+                additionalPaths,
+                [ path.join(__dirname, '/../src') ]
+            )
+        }
+    ];
+
     return {
         preLoaders: [
             {
                 test: /\.(ts|tsx)$/,
                 loader: "babel-loader!ts-loader"
             },
-
         ],
-        loaders: [
-            {
-                test: /\.js$/,
-                loader: 'babel-loader'
-            },
-            {
-                test: /\.css$/,
-                loader: 'style-loader!css-loader'
-            },
-            {
-                test: /\.sass$/,
-                loader: 'style-loader!css-loader!sass-loader?outputStyle=expanded&indentedSyntax'
-            },
-            {
-                test: /\.scss$/,
-                loader: 'style-loader!css-loader!sass-loader?outputStyle=expanded'
-            },
-            {
-                test: /\.less$/,
-                loader: 'style-loader!css-loader!less-loader'
-            },
-            {
-                test: /\.styl$/,
-                loader: 'style-loader!css-loader!stylus-loader'
-            },
-            {
-                test: /\.(png|jpg|gif|woff|woff2)$/,
-                loader: 'url-loader?limit=8192'
-            },
-            {
-                test: /\.(mp4|ogg|svg)$/,
-                loader: 'file-loader'
-            }
-        ]
+        loaders
         /*externals: {
             "react": "React",
             "react-dom": "ReactDOM"

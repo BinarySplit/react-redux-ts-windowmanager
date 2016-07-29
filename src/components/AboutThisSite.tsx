@@ -6,6 +6,7 @@ export let AboutThisSiteComponent = () => (<div>
     <ul>
         <li>Moving &amp; resizing windows</li>
         <li>Opening &amp; closing windows</li>
+        <li>Ahead-of-time rendering of the initial React DOM (isomorphic rendering done during build)</li>
     </ul>
     <p>
         What probably won't work (yet):

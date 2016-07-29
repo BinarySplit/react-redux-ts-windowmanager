@@ -5,6 +5,7 @@ let webpack = require('webpack');
 var CompressionPlugin = require("compression-webpack-plugin");
 let baseConfig = require('./base');
 let defaultSettings = require('./defaults');
+let ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 // Add needed plugins here
 let BowerWebpackPlugin = require('bower-webpack-plugin');
@@ -33,23 +34,17 @@ let config = Object.assign({}, baseConfig, {
     //   minRatio: 0.95
     // }),
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
+    new ExtractTextPlugin("[name].css")
   ],
   externals: {
     "react": "React",
     "react-dom": "ReactDOM"
   },
-  module: defaultSettings.getDefaultModules()
+  module: defaultSettings.getDefaultModules(baseConfig.additionalPaths, false)
 });
 
 // Add needed loaders to the defaults here
-config.module.loaders.push({
-  test: /\.(js|jsx)$/,
-  loader: 'babel',
-  include: [].concat(
-    config.additionalPaths,
-    [ path.join(__dirname, '/../src') ]
-  )
-});
+config.module.loaders.push();
 
 module.exports = config;
