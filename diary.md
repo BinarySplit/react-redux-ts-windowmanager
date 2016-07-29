@@ -14,3 +14,8 @@ Thoughts:
         ** It's almost essential for dividing code into bundles
             *** Not sure how bundling and on-demand-loading Redux reducers & action creators would work though...
             * https://github.com/erikras/ducks-modular-redux
+    * Making props shallow-equal when nothing has changed is quite a pain
+        * Binding all event handlers in the component's ctor
+        * Passing children to components is particularly annoying
+            ** Had to roll my own solution as there seems to be no discussion online
+        * Now that they're easy to use via decorator, using memoized functions liberally is working well

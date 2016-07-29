@@ -5,11 +5,12 @@ import {connect} from "react-redux";
 import {Action} from "redux/index";
 import {createWindow} from "../actions/Window";
 import Window from "../components/Window";
-import {makeMemoizer, Memoizer} from "../utils/makeMemoizer";
+import {memoizeMethodWithKey} from "../utils/memoize";
 import {WindowListState} from "../reducers/WindowListReducer";
 import {DragParams} from "../reducers/DragReducer";
 import {MainState} from "../reducers/index";
 import {drag, dragEnd} from "../actions/Drag";
+import {WindowState} from "../reducers/WindowReducer";
 
 //const yeomanImage = require('../images/yeoman.png');
 
@@ -36,9 +37,7 @@ class WindowManagerComponent extends React.Component<WindowManagerProps, {}> {
         super(props);
         this.onMouseEvent = this.onMouseEvent.bind(this);
         this.onCreateWindow = this.onCreateWindow.bind(this);
-        this.memoize = makeMemoizer();
     }
-    memoize: Memoizer;
     onMouseEvent(event:__React.MouseEvent) {
         let {dragParams, dispatch} = this.props;
         //An event with the coordinates of the top of the browser's UI window ([0, -30]) is created
@@ -57,6 +56,10 @@ class WindowManagerComponent extends React.Component<WindowManagerProps, {}> {
 
         this.props.dispatch(createWindow("", "Title"));
     }
+    @memoizeMethodWithKey
+    renderWindow(key: string, window: WindowState) {
+        return <Window key={key} window={window} dispatch={this.props.dispatch} />;
+    }
     render() {
         let {windows, dispatch} = this.props;
         return (
@@ -64,9 +67,7 @@ class WindowManagerComponent extends React.Component<WindowManagerProps, {}> {
                  onMouseMove={this.onMouseEvent}
                  onMouseUp={this.onMouseEvent}>
                 <div id="windows">
-                    {windows.map((w) =>
-                        this.memoize("window" + w.windowId, [w, dispatch],
-                            (w, dispatch) => (<Window key={w.windowId} window={w} dispatch={dispatch} />)))}
+                    {windows.map((w) => this.renderWindow(w.windowId.toString(), w))}
                 </div>
                 <button onClick={this.onCreateWindow}>create window</button>
             </div>

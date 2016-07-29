@@ -3,7 +3,7 @@ import {Action} from "redux/index";
 import "styles/Window.less";
 import {dragWindow, ResizeSide, resizeWindow, closeWindow} from "../actions/Window";
 import * as shallowCompare from "react-addons-shallow-compare";
-import {makeMemoizer, Memoizer} from "../utils/makeMemoizer";
+import {memoize, memoizeMethod} from "../utils/memoize";
 import {WindowState} from "../reducers/WindowReducer";
 import {AboutThisSiteComponent} from "./AboutThisSite";
 import ComponentClass = __React.ComponentClass;
@@ -24,7 +24,7 @@ interface TableRowProps {
 
 let components: {[key:string]: ComponentClass<any> | SFC<any> | ClassType<any, any, any>}  = {
     AboutThisSite: AboutThisSiteComponent
-}
+};
 
 class TableRow extends React.Component<TableRowProps, void> {
 
@@ -70,14 +70,12 @@ export default class Window extends React.Component<WindowProps, void> {
     displayName: "Window";
     constructor(props: WindowProps) {
         super(props);
-        this.memoize = makeMemoizer();
         this.onWindowDragStart = this.onWindowDragStart.bind(this);
         this.onWindowClose = this.onWindowClose.bind(this);
         for(var i = 0; i < 8; i++) {
             this.onWindowResizeStart[i] = this.onWindowResizeStartFn.bind(this, i);
         }
     }
-    memoize: Memoizer;
 
     shouldComponentUpdate(nextProps:WindowProps, nextState:void) {
         return shallowCompare(this, nextProps, nextState);
@@ -108,11 +106,19 @@ export default class Window extends React.Component<WindowProps, void> {
         this.props.dispatch(resizeWindow(windowId, side, pos, size, event));
     }
     onWindowResizeStart: ((event:__React.MouseEvent) => any)[] = [];
+
+    @memoizeMethod
+    renderContent(Component: any) {
+        return <div className="wm-window-content">{Component && <Component />}</div>;
+    }
+    @memoizeMethod
+    renderTitleBar(title: string) {
+        return <TitleBar title={title} onDragStart={this.onWindowDragStart} onClose={this.onWindowClose} />;
+    }
+
     render() {
         let {windowId, pos, componentType, title, size} = this.props.window;
         let Component = components[componentType];
-        let content = this.memoize("content", [Component],
-            (Component) => <div className="wm-window-content">{Component && <Component />}</div>);
 
         return (<table className="wm-window" key={windowId} style={Window.absolutePosition(pos, size)}>
             <tbody>
@@ -123,14 +129,12 @@ export default class Window extends React.Component<WindowProps, void> {
                 <TableRow className="wm-window-titlerow"
                           onDragLeft={this.onWindowResizeStart[ResizeSide.L]}
                           onDragRight={this.onWindowResizeStart[ResizeSide.R]}>
-                    <TitleBar title={title}
-                              onDragStart={this.onWindowDragStart}
-                              onClose={this.onWindowClose} />
+                    {this.renderTitleBar(title)}
                 </TableRow>
                 <TableRow className="wm-window-middle"
                           onDragLeft={this.onWindowResizeStart[ResizeSide.L]}
                           onDragRight={this.onWindowResizeStart[ResizeSide.R]}>
-                    {content}
+                    {this.renderContent(Component)}
                 </TableRow>
                 <TableRow className="wm-window-bottom"
                           onDragLeft={this.onWindowResizeStart[ResizeSide.BL]}

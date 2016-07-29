@@ -33,7 +33,7 @@ let config = Object.assign({}, baseConfig, {
     //   minRatio: 0.95
     // }),
     new webpack.optimize.OccurenceOrderPlugin(),
-      new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin()
   ],
   externals: {
     "react": "React",
