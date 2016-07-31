@@ -6,8 +6,9 @@ export interface DragParams {
     initialPos: [number, number],
     args: any
 }
+const initialState: DragParams = null;
 
-export function DragReducer(state: DragParams, action:Action):DragParams {
+export function DragReducer(state: DragParams = initialState, action:Action):DragParams {
     switch(action.type) {
         case DRAG_START: {
             let {dragType, initialPos} = action as DragAction;

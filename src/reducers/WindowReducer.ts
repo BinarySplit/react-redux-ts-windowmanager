@@ -14,7 +14,7 @@ export interface WindowState {
 
 export function WindowReducer(state:WindowState, action:any):WindowState {
     switch(action.type) {
-        case DRAG: {
+        case DRAG:{
             if(isDragWindowAction(action)) {
                 let [x, y] = action.initialWindowPos;
                 let [dx, dy] = action.deltaPos;

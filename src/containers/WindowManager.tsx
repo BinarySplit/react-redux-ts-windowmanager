@@ -11,8 +11,17 @@ import {DragParams} from "../reducers/DragReducer";
 import {MainState} from "../reducers/index";
 import {drag, dragEnd} from "../actions/Drag";
 import {WindowState} from "../reducers/WindowReducer";
+import {IconState} from "../reducers/IconListReducer";
 
-//const yeomanImage = require('../images/yeoman.png');
+
+interface IconProps {
+    icons: IconState
+}
+
+class IconComponent extends React.Component<IconProps, {}> {
+
+}
+
 
 interface WindowManagerProps {
     windows: WindowListState,
@@ -50,7 +59,7 @@ class WindowManagerComponent extends React.Component<WindowManagerProps, {}> {
         return <Window key={key} window={window} dispatch={this.props.dispatch} />;
     }
     render() {
-        let {windows, dispatch} = this.props;
+        let {windows} = this.props;
         return (
             <div className="wm-window-manager"
                  onMouseMove={this.onMouseEvent}
