@@ -10,11 +10,16 @@ let ExtractTextPlugin = require('extract-text-webpack-plugin');
 let BowerWebpackPlugin = require('bower-webpack-plugin');
 
 let config = Object.assign({}, baseConfig, {
-  entry: [
-    'webpack-dev-server/client?http://127.0.0.1:' +defaultSettings.port,
-    'webpack/hot/only-dev-server',
-    './src/index',
-  ],
+  entry: {
+    main: [
+      'webpack-dev-server/client?http://127.0.0.1:' +defaultSettings.port,
+      'webpack/hot/only-dev-server',
+      './src/index',
+    ],
+    "icon-images": [
+      './src/styles/IconImages.less'
+    ]
+  },
   cache: true,
   devtool: 'source-map',
   plugins: [
@@ -23,7 +28,7 @@ let config = Object.assign({}, baseConfig, {
     new BowerWebpackPlugin({
       searchResolveModulesDirectories: false
     }),
-    new ExtractTextPlugin("[name].css"),
+    new ExtractTextPlugin("[name].css", {allChunks: true}),
   ],
   module: defaultSettings.getDefaultModules(baseConfig.additionalPaths, true)
 });

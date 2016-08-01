@@ -27,11 +27,16 @@ function render (locals, callback) {
 
   <script>__REACT_DEVTOOLS_GLOBAL_HOOK__ = parent.__REACT_DEVTOOLS_GLOBAL_HOOK__</script>
   <!-- Dependencies -->
-  <script src="assets/react.js"></script>
-  <script src="assets/react-dom.js"></script>
+  <script type="text/javascript" src="assets/react.js" defer></script>
+  <script type="text/javascript" src="assets/react-dom.js" defer></script>
 
   <!-- Main -->
-  <script type="text/javascript" src="assets/app.js"></script>
+  <script type="text/javascript" src="assets/app.js" defer></script>
+  
+  <!-- Deferred CSS -->
+  <noscript>
+  <link rel="stylesheet" type="text/css" href="assets/icon-images.css">
+  </noscript>
 </body>
 </html>
 `;

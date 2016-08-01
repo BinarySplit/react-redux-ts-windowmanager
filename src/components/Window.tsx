@@ -84,6 +84,9 @@ export default class Window extends React.Component<WindowProps, void> {
         this.props.dispatch(resizeWindow(windowId, side, pos, size, event));
     }
     onWindowResizeStart: ((event:__React.MouseEvent) => any)[] = [];
+    onWindowContentMouseDown() {
+        //TODO: Activate window if needed
+    }
 
     @memoizeMethod
     renderContent(Component: any) {
@@ -93,11 +96,8 @@ export default class Window extends React.Component<WindowProps, void> {
     renderTitleBar(title: string) {
         return <TitleBar title={title} onDragStart={this.onWindowDragStart} onClose={this.onWindowClose} />;
     }
-    onWindowContentMouseDown() {
-        //TODO: Activate window if needed
-    }
     @memoizeMethod
-    leftCol() {
+    renderLeftCol() {
         return <div className="wm-window-col wm-window-left">
             <div className="wm-window-cell wm-window-top" onMouseDown={this.onWindowResizeStart[ResizeSide.TL]} />
             <div className="wm-window-cell wm-window-middle" onMouseDown={this.onWindowResizeStart[ResizeSide.L]} />
@@ -105,7 +105,7 @@ export default class Window extends React.Component<WindowProps, void> {
         </div>;
     }
     @memoizeMethod
-    rightCol() {
+    renderRightCol() {
         return <div className="wm-window-col wm-window-right">
             <div className="wm-window-cell wm-window-top" onMouseDown={this.onWindowResizeStart[ResizeSide.TR]} />
             <div className="wm-window-cell wm-window-middle" onMouseDown={this.onWindowResizeStart[ResizeSide.R]} />
@@ -118,7 +118,7 @@ export default class Window extends React.Component<WindowProps, void> {
         let Component = components[componentType];
 
         return (<div className="wm-window" key={windowId} style={Window.absolutePosition(pos, size)}>
-            {this.leftCol()}
+            {this.renderLeftCol()}
             <div className="wm-window-col wm-window-center">
                 <div className="wm-window-cell wm-window-top" onMouseDown={this.onWindowResizeStart[ResizeSide.T]} />
                 <div className="wm-window-cell wm-window-middle" onMouseDown={this.onWindowContentMouseDown}>
@@ -127,7 +127,7 @@ export default class Window extends React.Component<WindowProps, void> {
                 </div>
                 <div className="wm-window-cell wm-window-bottom" onMouseDown={this.onWindowResizeStart[ResizeSide.B]} />
             </div>
-            {this.rightCol()}
+            {this.renderRightCol()}
         </div>);
     }
 }

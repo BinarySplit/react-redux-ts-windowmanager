@@ -17,12 +17,12 @@ export function WindowReducer(state:WindowState, action:any):WindowState {
         case DRAG:{
             if(isDragWindowAction(action)) {
                 let [x, y] = action.initialWindowPos;
-                let [dx, dy] = action.deltaPos;
+                let [dx, dy] = action.deltaDragPos;
                 return Object.assign({}, state, {
                     pos: [x + dx, y + dy] as [number, number]
                 });
             } else if(isResizeWindowAction(action)) {
-                let {side, initialWindowPos: [x,y], initialWindowSize: [w,h], deltaPos: [dx,dy]} = action;
+                let {side, initialWindowPos: [x,y], initialWindowSize: [w,h], deltaDragPos: [dx,dy]} = action;
                 let newX = x, newY = y, newW = w, newH = h;
                 let minWidth = 100, minHeight = 50;
 

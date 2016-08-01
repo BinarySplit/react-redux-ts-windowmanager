@@ -34,7 +34,7 @@ function getDefaultModules(additionalPaths, isDev) {
             loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
         },
         {
-            test: /\.(png|jpg|gif|woff|woff2)$/,
+            test: /\.(png|jpg|gif|woff|woff2|svg)$/,
             loader: 'url-loader?limit=8192'
         },
         {

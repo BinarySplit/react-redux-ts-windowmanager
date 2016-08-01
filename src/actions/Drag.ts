@@ -8,37 +8,43 @@ export const DRAG_END = "DRAG_END";
 
 export interface DragAction extends Action {
     dragType: string,
-    initialPos: [number, number],
-    deltaPos: [number, number],
-    pos: [number, number]
+    initialDragPos: [number, number],
+    deltaDragPos: [number, number],
+    dragPos: [number, number]
 }
 
-export function dragStart<T>(event: MouseEvent|__React.MouseEvent, dragType: string, args:T): DragAction & T {
+/*reduced interface from MouseEvent / __React.MouseEvent exposing only the needed fields*/
+export interface MouseEventForDrag {
+    pageX: number,
+    pageY: number
+}
+
+export function dragStart<T>(event: MouseEventForDrag, dragType: string, args:T): DragAction & T {
     return Object.assign({}, args, {
         type: DRAG_START,
         dragType,
-        initialPos: [event.pageX, event.pageY] as [number, number],
-        deltaPos: [0, 0] as [number, number],
-        pos: [event.pageX, event.pageY] as [number, number]
+        initialDragPos: [event.pageX, event.pageY] as [number, number],
+        deltaDragPos: [0, 0] as [number, number],
+        dragPos: [event.pageX, event.pageY] as [number, number]
     });
 }
-export function drag(event: MouseEvent|__React.MouseEvent, dragParams: DragParams): DragAction {
-    let {dragType, initialPos, args} = dragParams;
+export function drag(event: MouseEventForDrag, dragParams: DragParams): DragAction {
+    let {dragType, initialDragPos, args} = dragParams;
     return Object.assign({}, args, {
         type: DRAG,
         dragType,
-        initialPos,
-        deltaPos: [event.pageX - initialPos[0], event.pageY - initialPos[1]] as [number, number],
-        pos: [event.pageX, event.pageY] as [number, number]
+        initialDragPos,
+        deltaDragPos: [event.pageX - initialDragPos[0], event.pageY - initialDragPos[1]] as [number, number],
+        dragPos: [event.pageX, event.pageY] as [number, number]
     });
 }
-export function dragEnd(event: MouseEvent|__React.MouseEvent, dragParams: DragParams): DragAction {
-    let {dragType, initialPos, args} = dragParams;
+export function dragEnd(event: MouseEventForDrag, dragParams: DragParams): DragAction {
+    let {dragType, initialDragPos, args} = dragParams;
     return Object.assign({}, args, {
         type: DRAG_END,
         dragType,
-        initialPos,
-        deltaPos: [event.pageX - initialPos[0], event.pageY - initialPos[1]] as [number, number],
-        pos: [event.pageX, event.pageY] as [number, number]
+        initialDragPos,
+        deltaDragPos: [event.pageX - initialDragPos[0], event.pageY - initialDragPos[1]] as [number, number],
+        dragPos: [event.pageX, event.pageY] as [number, number]
     });
 }

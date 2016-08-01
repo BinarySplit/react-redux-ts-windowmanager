@@ -11,21 +11,16 @@ import {DragParams} from "../reducers/DragReducer";
 import {MainState} from "../reducers/index";
 import {drag, dragEnd} from "../actions/Drag";
 import {WindowState} from "../reducers/WindowReducer";
-import {IconState} from "../reducers/IconListReducer";
+import {IconState, IconListState} from "../reducers/IconListReducer";
+import {Icon} from "../components/Icon";
 
 
-interface IconProps {
-    icons: IconState
-}
-
-class IconComponent extends React.Component<IconProps, {}> {
-
-}
 
 
 interface WindowManagerProps {
-    windows: WindowListState,
-    dragParams: DragParams
+    windows: WindowListState;
+    iconList: IconListState;
+    dragParams: DragParams;
     dispatch: (a:Action) => Action; //Workaround for WebStorm error highlighting bug https://youtrack.jetbrains.com/issue/WEB-22374
 }
 
@@ -58,24 +53,35 @@ class WindowManagerComponent extends React.Component<WindowManagerProps, {}> {
     renderWindow(key: string, window: WindowState) {
         return <Window key={key} window={window} dispatch={this.props.dispatch} />;
     }
+    @memoizeMethodWithKey
+    renderIcon(key: string, icon: IconState) {
+        return <Icon key={key} icon={icon} dispatch={this.props.dispatch} />
+    }
     render() {
-        let {windows} = this.props;
+        let {windows, iconList} = this.props;
         return (
             <div className="wm-window-manager"
                  onMouseMove={this.onMouseEvent}
                  onMouseUp={this.onMouseEvent}>
+                <div id="icons">
+                    {iconList.icons
+                        .filter(i => i.container == "desktop")
+                        .map(i => this.renderIcon(i.iconId.toString(), i))}
+                </div>
+                <div id="ghostIcon">
+                    {iconList.ghostIcon && this.renderIcon("ghost", iconList.ghostIcon)}
+                </div>
                 <div id="windows">
                     {windows.map((w) => this.renderWindow(w.windowId.toString(), w))}
                 </div>
-                <button onClick={this.onCreateWindow}>create window</button>
             </div>
         );
     }
 }
 export default
 connect(
-    function ({windows, dragParams}:MainState, ownProps:{}):{} {
-        return {windows, dragParams};
+    function ({windows, iconList, dragParams}:MainState, ownProps:{}):{} {
+        return {windows, iconList, dragParams};
     },
     null
 )(WindowManagerComponent);

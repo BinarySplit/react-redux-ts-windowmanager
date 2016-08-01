@@ -37,7 +37,11 @@ let config = Object.assign({}, baseConfig, {
             loader: 'babel-loader'
         },
         {
-            test: /\.(css|less|png|jpg|gif|woff|woff2)$/,
+            test: /\.(png|jpg|gif|woff|woff2|svg)$/,
+            loader: 'url-loader?limit=8192'
+        },
+        {
+            test: /\.(css|less)$/,
             loader: 'null-loader'
         }
     ]

@@ -1,0 +1,29 @@
+.wm-icon {
+  position:absolute;
+  width: 96px;
+  height: 128px;
+
+  &-image {
+    position:absolute;
+    width: 64px;
+    height: 64px;
+    left: 16px;
+    background-image: radial-gradient(circle, #808080, transparent 50%);
+  }
+
+  &-title {
+    position:absolute;
+    top: 72px;
+    width: 96px;
+    height: 32px;
+    line-height: 16px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  #ghostIcon>& {
+    opacity: 0.5; //TODO: Dither?
+    pointer-events: none;
+  }
+}

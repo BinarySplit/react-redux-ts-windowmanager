@@ -65,7 +65,7 @@ export function WindowListReducer(state: WindowListState = initialWindows, actio
         }
 
         default: {
-            if(isWindowAction(action)) {
+            if (isWindowAction(action)) {
                 let newList = state.slice(0);
                 let idx = newList.findIndex(w => w.windowId == action.windowId);
                 if(idx == -1) throw new Error("Invalid windowId in action:" + JSON.stringify(action));
