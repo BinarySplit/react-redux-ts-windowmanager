@@ -15,32 +15,9 @@ interface WindowProps {
     dispatch: (a:Action) => Action
 }
 
-interface TableRowProps {
-    className: string;
-    onDragLeft?: __React.MouseEventHandler;
-    onDragCenter?: __React.MouseEventHandler;
-    onDragRight?: __React.MouseEventHandler;
-}
-
 let components: {[key:string]: ComponentClass<any> | SFC<any> | ClassType<any, any, any>}  = {
     AboutThisSite: AboutThisSiteComponent
 };
-
-class TableRow extends React.Component<TableRowProps, void> {
-
-    shouldComponentUpdate(nextProps:TableRowProps, nextState:void) {
-        return shallowCompare(this, nextProps, nextState);
-    }
-    render() {
-        let {className, children, onDragLeft, onDragCenter, onDragRight} = this.props;
-
-        return <tr className={className}>
-            <td className="wm-window-left" onMouseDown={onDragLeft}/>
-            <td className="wm-window-center" onMouseDown={onDragCenter}>{children}</td>
-            <td className="wm-window-right" onMouseDown={onDragRight}/>
-        </tr>;
-    }
-}
 
 interface TitleBarProps {
     title: string;
@@ -72,6 +49,7 @@ export default class Window extends React.Component<WindowProps, void> {
         super(props);
         this.onWindowDragStart = this.onWindowDragStart.bind(this);
         this.onWindowClose = this.onWindowClose.bind(this);
+        this.onWindowContentMouseDown = this.onWindowContentMouseDown.bind(this);
         for(var i = 0; i < 8; i++) {
             this.onWindowResizeStart[i] = this.onWindowResizeStartFn.bind(this, i);
         }
@@ -115,33 +93,42 @@ export default class Window extends React.Component<WindowProps, void> {
     renderTitleBar(title: string) {
         return <TitleBar title={title} onDragStart={this.onWindowDragStart} onClose={this.onWindowClose} />;
     }
+    onWindowContentMouseDown() {
+        //TODO: Activate window if needed
+    }
+    @memoizeMethod
+    leftCol() {
+        return <div className="wm-window-col wm-window-left">
+            <div className="wm-window-cell wm-window-top" onMouseDown={this.onWindowResizeStart[ResizeSide.TL]} />
+            <div className="wm-window-cell wm-window-middle" onMouseDown={this.onWindowResizeStart[ResizeSide.L]} />
+            <div className="wm-window-cell wm-window-bottom" onMouseDown={this.onWindowResizeStart[ResizeSide.BL]} />
+        </div>;
+    }
+    @memoizeMethod
+    rightCol() {
+        return <div className="wm-window-col wm-window-right">
+            <div className="wm-window-cell wm-window-top" onMouseDown={this.onWindowResizeStart[ResizeSide.TR]} />
+            <div className="wm-window-cell wm-window-middle" onMouseDown={this.onWindowResizeStart[ResizeSide.R]} />
+            <div className="wm-window-cell wm-window-bottom" onMouseDown={this.onWindowResizeStart[ResizeSide.BR]} />
+        </div>;
+    }
 
     render() {
         let {windowId, pos, componentType, title, size} = this.props.window;
         let Component = components[componentType];
 
-        return (<table className="wm-window" key={windowId} style={Window.absolutePosition(pos, size)}>
-            <tbody>
-                <TableRow className="wm-window-top"
-                          onDragLeft={this.onWindowResizeStart[ResizeSide.TL]}
-                          onDragCenter={this.onWindowResizeStart[ResizeSide.T]}
-                          onDragRight={this.onWindowResizeStart[ResizeSide.TR]}/>
-                <TableRow className="wm-window-titlerow"
-                          onDragLeft={this.onWindowResizeStart[ResizeSide.L]}
-                          onDragRight={this.onWindowResizeStart[ResizeSide.R]}>
+        return (<div className="wm-window" key={windowId} style={Window.absolutePosition(pos, size)}>
+            {this.leftCol()}
+            <div className="wm-window-col wm-window-center">
+                <div className="wm-window-cell wm-window-top" onMouseDown={this.onWindowResizeStart[ResizeSide.T]} />
+                <div className="wm-window-cell wm-window-middle" onMouseDown={this.onWindowContentMouseDown}>
                     {this.renderTitleBar(title)}
-                </TableRow>
-                <TableRow className="wm-window-middle"
-                          onDragLeft={this.onWindowResizeStart[ResizeSide.L]}
-                          onDragRight={this.onWindowResizeStart[ResizeSide.R]}>
                     {this.renderContent(Component)}
-                </TableRow>
-                <TableRow className="wm-window-bottom"
-                          onDragLeft={this.onWindowResizeStart[ResizeSide.BL]}
-                          onDragCenter={this.onWindowResizeStart[ResizeSide.B]}
-                          onDragRight={this.onWindowResizeStart[ResizeSide.BR]}/>
-            </tbody>
-        </table>);
+                </div>
+                <div className="wm-window-cell wm-window-bottom" onMouseDown={this.onWindowResizeStart[ResizeSide.B]} />
+            </div>
+            {this.rightCol()}
+        </div>);
     }
 }
 

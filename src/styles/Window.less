@@ -14,46 +14,53 @@
   transform: translateZ(0);
   contain: layout paint;
   border-spacing: 0;
+  display: flex;
+
+  &-col {display: flex; flex-direction: column;}
 
   &-top {background-image: @border-t;cursor:ns-resize;}
   &-right {background-image: @border-r;cursor:ew-resize;}
   &-bottom {background-image: @border-b;cursor:ns-resize;}
   &-left {background-image: @border-l;cursor:ew-resize;}
 
-  &-top>&-left {background-image: @border-t, @border-l;cursor:nwse-resize;}
-  &-top>&-right {background-image: @border-t, @border-r;cursor:nesw-resize;}
-  &-bottom>&-right {background-image: @border-b, @border-r;cursor:nwse-resize;}
-  &-bottom>&-left {background-image: @border-b, @border-l;cursor:nesw-resize;}
+  &-left>&-top {background-image: @border-t, @border-l;cursor:nwse-resize;}
+  &-right>&-top {background-image: @border-t, @border-r;cursor:nesw-resize;}
+  &-right>&-bottom {background-image: @border-b, @border-r;cursor:nwse-resize;}
+  &-left>&-bottom {background-image: @border-b, @border-l;cursor:nesw-resize;}
 
-
-  &-top, &-bottom {
-    height: @border-width;
-    min-height: @border-width;
-    max-height: @border-width;
-  }
+  //Columns
   &-left, &-right {
-    padding: 0;
+    flex: 0 0 @border-width;
     width: @border-width;
     min-width: @border-width;
     max-width: @border-width;
   }
-  &-titlerow {
-    height: 20px;
+  &-center {
+    flex: 1 1 auto;
+    position: relative;
+    min-width: 0; //Needed because of http://stackoverflow.com/a/12131365
+  }
+
+  //Cells
+  &-top, &-bottom {
+    flex: 0 0 @border-width;
+    height: @border-width;
+    min-height: @border-width;
+    max-height: @border-width;
   }
   &-middle {
-    height: auto;
-  }
-  &-center {
-    padding: 0;
-    width: auto;
-    position: relative;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
   }
 
   &-titlebar {
+    flex: 0 0 20px;
+    height: 20px;
     display: flex;
   }
   &-title {
-    flex: auto 1 1;
+    flex: 1 1 auto;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -62,7 +69,7 @@
     user-select: none;
   }
   &-buttons {
-    flex: 60px 0 0;
+    flex: 0 0 auto;
   }
 
   &-button-minimize,
@@ -94,6 +101,7 @@
   }
 
   &-content {
+    flex: 1 1 auto;
     width: 100%;
     height: 100%;
     background-color: @color-secondary-1-1;

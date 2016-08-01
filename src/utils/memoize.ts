@@ -25,7 +25,13 @@ export function memoize<TFn extends (...args: any[]) => any>(fn: TFn): TFn {
 }
 
 export function memoizeMethod(target: any, key: string, value: any) {
-    return {value: memoize(value.value)};
+    //Store the memoized method on a unique symbol on each instance
+    let sym = Symbol("Memoized " + (target.name || "method"));
+    return {value: function() {
+        if(!this[sym])
+            this[sym] = memoize(value.value);
+        return this[sym].apply(this, arguments);
+    }};
 }
 
 export function memoizeWithKey<TFn extends (key: string, ...args: any[]) => any>(fn: TFn): TFn {
@@ -43,5 +49,11 @@ export function memoizeWithKey<TFn extends (key: string, ...args: any[]) => any>
 }
 
 export function memoizeMethodWithKey(target: any, key: string, value: any) {
-    return {value: memoizeWithKey(value.value)};
+    //Store the memoized method on a unique symbol on each instance
+    let sym = Symbol("Memoized " + (target.name || "method"));
+    return {value: function() {
+        if(!this[sym])
+            this[sym] = memoizeWithKey(value.value);
+        return this[sym].apply(this, arguments);
+    }};
 }
