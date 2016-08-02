@@ -14,7 +14,6 @@ if(process.env.NODE_ENV !== 'production') {
 
 const store = configureStore();
 
-
 render(
     <Provider store={store}>
         <App />

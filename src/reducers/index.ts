@@ -6,14 +6,14 @@ import {DragParams, DragReducer} from "./DragReducer";
 import {IconListReducer, IconListState} from "./IconListReducer";
 
 const reducers:ReducersMapObject = {
-    windows: WindowListReducer,
     dragParams: DragReducer,
+    windowList: WindowListReducer,
     iconList: IconListReducer
 };
 
 export interface MainState {
-    windows: WindowListState,
     dragParams: DragParams,
+    windowList: WindowListState,
     iconList: IconListState
 }
 

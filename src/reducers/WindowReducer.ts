@@ -4,7 +4,6 @@ import {DRAG} from "../actions/Drag";
 export const enum WindowVisibility { Normal, Maximized, Minimized }
 
 export interface WindowState {
-    windowId: number,
     componentType: string,
     title: string,
     visibility: WindowVisibility,

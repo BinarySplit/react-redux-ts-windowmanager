@@ -2,91 +2,130 @@ import {Action} from "redux/index";
 import {isWindowAction, OPEN_WINDOW, CreateWindowAction, CLOSE_WINDOW, WindowAction} from "../actions/Window";
 import {WindowState, WindowReducer, WindowVisibility} from "./WindowReducer";
 
-export type WindowListState = WindowState[]; //Ordered from back to front
+export interface WindowFocusAction {
+    actionId: number, //not meaningful. Just a field that reliably changes every time a new action is "fired"
+    windowId: number
+}
 
-let initialWindows:WindowState[] = [
-    {
-        windowId: -1,
-        componentType: "",
-        title: "Foo Bar",
-        visibility: WindowVisibility.Normal,
-        pos: [200, 100],
-        size: [400, 300]
-    },
-    {
-        windowId: -2,
-        componentType: "",
-        title: "Baz Qux",
-        visibility: WindowVisibility.Normal,
-        pos: [400, 150],
-        size: [400, 300]
-    },
-    {
-        windowId: -3,
-        componentType: "AboutThisSite",
-        title: "About this site",
-        visibility: WindowVisibility.Normal,
-        pos: [300, 200],
-        size: [400, 300]
-    },
-];
-// for(var i = 0; i < 10; i++) {
-//     initialWindows.push({
-//         windowId: -i,
-//         componentType: "AboutThisSite",
-//         title: "About this site",
-//         visibility: WindowVisibility.Normal,
-//         pos: [i*50,(i%10)*50],
-//         size: [400, 300]
-//     });
-// }
+export interface WindowListStateFields {
+    windowsById: WindowState[],
+    windowOrder: number[],
+    nextWindowId: number,
+    focusedWindowId: number
+}
+export type WindowListState = WindowListStateFields & {};
 
-export function WindowListReducer(state: WindowListState = initialWindows, action:Action) {
+const initialState: WindowListState = {
+    windowsById: [
+        {
+            componentType: "",
+            title: "Foo Bar",
+            visibility: WindowVisibility.Normal,
+            pos: [200, 100],
+            size: [400, 300]
+        },
+        {
+            componentType: "",
+            title: "Baz Qux",
+            visibility: WindowVisibility.Normal,
+            pos: [400, 150],
+            size: [400, 300]
+        },
+        {
+            componentType: "AboutThisSite",
+            title: "About this site",
+            visibility: WindowVisibility.Normal,
+            pos: [300, 200],
+            size: [400, 300]
+        },
+    ],
+    windowOrder: [0,1,2],
+    nextWindowId: 3,
+    focusedWindowId: 2
+};
+
+function activateWindow(state: WindowListState, windowId: number): WindowListState {
+    let {windowOrder} = state;
+    let newWindowOrder: number[];
+    if (windowId == windowOrder[windowOrder.length - 1]) {
+        newWindowOrder = windowOrder;
+    } else {
+        //Move window to top of windowOrder stack & emit a focus action
+        newWindowOrder = windowOrder.slice();
+        let idx = newWindowOrder.indexOf(windowId);
+        if(idx != -1) {
+            newWindowOrder.splice(idx, 1);
+        }
+        newWindowOrder.push(windowId);
+    }
+    return Object.assign({}, state, {
+        windowOrder: newWindowOrder,
+        focusedWindowId: newWindowOrder[newWindowOrder.length - 1]
+    });
+}
+
+export function WindowListReducer(state: WindowListState = initialState, action:Action) {
+
     switch(action.type) {
         case OPEN_WINDOW: {
-            //TODO: move windows list to state.windowsById, state.windowOrder
-            //TODO: store nextWindowId in state
 
-            let {windowId, componentType, title} = action as CreateWindowAction;
-            let idx = state.findIndex(w => w.componentType == componentType);
-            if(idx != -1) {
-                if (idx == state.length - 1) {
-                    return state;
-                } else {
-                    var newState = state.slice();
-                    var item = newState.splice(idx, 1)[0];
-                    newState.push(item);
-                    return newState;
-                }
+            let {componentType, title} = action as CreateWindowAction;
+            //Check if window already exists - if so, activate existing window. Otherwise open new window.
+            let existingWindowId = state.windowsById.findIndex(w => w.componentType == componentType);
+            if(existingWindowId != -1) {
+                return activateWindow(state, existingWindowId);
             } else {
-                let newWindow:WindowState = {
-                    windowId, componentType, title,
+                //Generate a new windowId
+                let windowId = state.nextWindowId;
+                //Create the new window
+                let newWindowsById = state.windowsById.slice();
+                newWindowsById[windowId] = {
+                    componentType, title,
                     visibility: WindowVisibility.Normal,
                     pos: [0, 0],
                     size: [400, 300]
                 };
-                return state.concat(newWindow);
+
+                //Activate the new window
+                return activateWindow(Object.assign({}, state, {
+                    nextWindowId: state.nextWindowId + 1,
+                    windowsById: newWindowsById
+                }), windowId);
             }
         }
         case CLOSE_WINDOW: {
-            let closeAction = action as WindowAction;
+            let {windowId} = action as WindowAction;
 
-            let newList = state.slice();
-            let idx = newList.findIndex(w => w.windowId == closeAction.windowId);
-            if(idx == -1) throw new Error("Invalid windowId in action:" + JSON.stringify(action));
-            newList.splice(idx, 1);
+            //Update windowsById
+            let newWindowsById = state.windowsById.slice();
+            newWindowsById[windowId] = null;
 
-            return newList;
+            //Update windowOrder
+            let newWindowOrder = state.windowOrder.slice();
+            let idx = newWindowOrder.indexOf(windowId);
+            if(idx != -1) {
+                newWindowOrder.splice(idx, 1);
+            }
+
+            return activateWindow(Object.assign({}, state, {
+                    windowsById: newWindowsById,
+                    windowOrder: newWindowOrder
+                }),
+                newWindowOrder[newWindowOrder.length - 1]
+            );
         }
 
         default: {
             if (isWindowAction(action)) {
-                let newList = state.slice(0);
-                let idx = newList.findIndex(w => w.windowId == action.windowId);
-                if(idx == -1) throw new Error("Invalid windowId in action:" + JSON.stringify(action));
-                //Move to the end of newList
-                newList.push(WindowReducer(newList.splice(idx, 1)[0], action));
-                return newList;
+                let w = state.windowsById[action.windowId];
+                if(w != null) {
+                    let newWindowsById = state.windowsById.slice();
+                    newWindowsById[action.windowId] = WindowReducer(w, action);
+
+                    return activateWindow(Object.assign({}, state, {
+                            windowsById: newWindowsById
+                        }), action.windowId);
+                }
             }
             return state;
         }

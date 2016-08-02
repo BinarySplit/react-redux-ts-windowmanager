@@ -17,10 +17,14 @@ export class Icon extends React.Component<IconProps, {}> {
         this.onDoubleClick = this.onDoubleClick.bind(this);
     }
     onMouseDown(event: __React.MouseEvent) {
+        if(typeof event.button === "number" && event.button > 0) return;
+
         let {iconId, pos} = this.props.icon;
         this.props.dispatch(moveIcon(iconId, pos, event));
     }
-    onDoubleClick() {
+    onDoubleClick(event: __React.MouseEvent) {
+        if(typeof event.button === "number" && event.button > 0) return;
+
         let {title, componentType} = this.props.icon;
         this.props.dispatch(createWindow(componentType, title));
     }

@@ -19,3 +19,10 @@ Thoughts:
         * Passing children to components is particularly annoying
             ** Had to roll my own solution as there seems to be no discussion online
         * Now that they're easy to use via decorator, using memoized functions liberally is working well
+    * http://jamesknelson.com/join-the-dark-side-of-the-flux-responding-to-actions-with-actors/
+        ** Still quite awkward for triggering instantaneous DOM interactions, e.g. shifting focus,
+            as React probably hasn't rendered when actor is called
+    * redux-thunk
+        ** So far only one use case: getting up-to-date state for proper transactionality
+            e.g. to prevent DRAG events that trigger after DRAG_END because React hasn't handled the DRAG_END yet
+        ** AJAX will definitely warrant adding thunks though
