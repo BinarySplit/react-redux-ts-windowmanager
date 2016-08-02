@@ -11,7 +11,10 @@ let ExtractTextPlugin = require('extract-text-webpack-plugin');
 let BowerWebpackPlugin = require('bower-webpack-plugin');
 
 let config = Object.assign({}, baseConfig, {
-  entry: ['./src/index'],
+  entry: {
+    app: ['./src/index'],
+    "icon-images": ['./src/styles/IconImages.less']
+  },
   cache: false,
   devtool: false, //'source-map',
   plugins: [
@@ -35,7 +38,8 @@ let config = Object.assign({}, baseConfig, {
     // }),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.NoErrorsPlugin(),
-    new ExtractTextPlugin("[name].css")
+    new ExtractTextPlugin("[name].css", {allChunks: true}),
+
   ],
   externals: {
     "react": "React",
