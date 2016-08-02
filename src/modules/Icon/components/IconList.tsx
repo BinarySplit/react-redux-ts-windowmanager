@@ -24,7 +24,7 @@ export default class IconList extends React.Component<IconListProps, void> {
         let {container, iconList:{icons, selectedId}} = this.props;
         return <div className="wm-icons-list">
             {icons
-                .filter(i => i && i.container == "desktop")
+                .filter(i => i && i.container == container)
                 .map(icon => this.renderIcon(icon.iconId.toString(), icon, icon.iconId == selectedId))}
         </div>;
     }
