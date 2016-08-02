@@ -2,11 +2,6 @@ import {Action} from "redux/index";
 import {isWindowAction, OPEN_WINDOW, CreateWindowAction, CLOSE_WINDOW, WindowAction} from "./windowActions";
 import {WindowState, windowReducer, WindowVisibility} from "./windowReducer";
 
-export interface WindowFocusAction {
-    actionId: number, //not meaningful. Just a field that reliably changes every time a new action is "fired"
-    windowId: number
-}
-
 export interface WindowListStateFields {
     windowsById: WindowState[],
     windowOrder: number[],
@@ -25,15 +20,16 @@ const initialState: WindowListState = {
             size: [400, 300]
         },
         {
-            componentType: "",
-            title: "Baz Qux",
+            componentType: "AboutThisSite",
+            title: "About this site",
             visibility: WindowVisibility.Normal,
             pos: [400, 150],
             size: [400, 300]
         },
         {
-            componentType: "AboutThisSite",
-            title: "About this site",
+            componentType: "Folder",
+            componentArgs: {container: "welcome"},
+            title: "Welcome",
             visibility: WindowVisibility.Normal,
             pos: [300, 200],
             size: [400, 300]

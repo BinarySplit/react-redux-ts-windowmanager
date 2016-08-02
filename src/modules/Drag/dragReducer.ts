@@ -1,8 +1,9 @@
 import {Action} from "redux/index";
-import {DragAction, DRAG_START, DRAG_END} from "./dragActions";
+import {DragAction, DRAG_START, DRAG_END, DRAG} from "./dragActions";
 
 export interface DragParams {
     dragType: string,
+    isDragging: Boolean, //Whether the drag has moved sufficiently to be considered intentional
     initialDragPos: [number, number],
     args: any
 }
@@ -16,7 +17,16 @@ export function DragReducer(state: DragParams = initialState, action:Action):Dra
             delete args.type;
             delete args.dragType;
             delete args.initialDragPos;
-            return {dragType, initialDragPos, args};
+            return {dragType, isDragging: false, initialDragPos, args};
+        }
+        case DRAG: {
+            let dragAction = action as DragAction;
+            let dist = Math.abs(dragAction.deltaDragPos[0]) + Math.abs(dragAction.deltaDragPos[1]);
+            if(state && !state.isDragging && dist > 10) {
+                return Object.assign({}, state, {isDragging: true});
+            } else {
+                return state;
+            }
         }
         case DRAG_END: {
             return null;

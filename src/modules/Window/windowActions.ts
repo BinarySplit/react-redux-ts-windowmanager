@@ -10,29 +10,30 @@ export const ACTIVATE_WINDOW = "ACTIVATE_WINDOW";
 
 //Types
 export interface WindowAction extends Action {
-    windowId: number
+    windowId: number;
 }
 export interface CreateWindowAction extends Action {
-    componentType: string,
-    title: string
+    componentType: string;
+    componentArgs: any;
+    title: string;
 }
 export interface DragWindowActionArgs {
-    initialWindowPos: [number, number]
+    initialWindowPos: [number, number];
 }
 export type DragWindowAction = DragAction & WindowAction & DragWindowActionArgs;
 
 export const enum ResizeSide {T=0, R=1, B=2, L=3, TL=4, TR=5, BR=6, BL=7}
 export interface ResizeWindowActionArgs {
-    windowId: number,
-    initialWindowPos: [number, number],
-    initialWindowSize: [number, number],
-    side: ResizeSide
+    windowId: number;
+    initialWindowPos: [number, number];
+    initialWindowSize: [number, number];
+    side: ResizeSide;
 }
 export type ResizeWindowAction = DragAction & WindowAction & ResizeWindowActionArgs;
 
 //Action Creators
-export function createWindow(componentType: string, title: string): CreateWindowAction {
-    return {type: OPEN_WINDOW, componentType, title};
+export function createWindow(componentType: string, componentArgs: any, title: string): CreateWindowAction {
+    return {type: OPEN_WINDOW, componentType, componentArgs, title};
 }
 export function closeWindow(windowId: number): WindowAction {
     return {type: CLOSE_WINDOW, windowId};

@@ -25,8 +25,8 @@ export default class Icon extends React.Component<IconProps, {}> {
     onDoubleClick(event: __React.MouseEvent) {
         if(typeof event.button === "number" && event.button > 0) return;
 
-        let {title, componentType} = this.props.icon;
-        this.props.dispatch(createWindow(componentType, title));
+        let {title, componentType, componentArgs} = this.props.icon;
+        this.props.dispatch(createWindow(componentType, componentArgs, title));
     }
     render() {
         let {pos, title, imageClass} = this.props.icon;

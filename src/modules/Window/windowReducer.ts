@@ -4,11 +4,12 @@ import {DRAG} from "../Drag/dragActions";
 export const enum WindowVisibility { Normal, Maximized, Minimized }
 
 export interface WindowState {
-    componentType: string,
-    title: string,
-    visibility: WindowVisibility,
-    pos: [number, number],
-    size: [number, number]
+    componentType: string;
+    componentArgs?: any;
+    title: string;
+    visibility: WindowVisibility;
+    pos: [number, number];
+    size: [number, number];
 }
 
 export function windowReducer(state:WindowState, action:any):WindowState {

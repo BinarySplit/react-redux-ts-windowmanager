@@ -7,7 +7,7 @@ import {Window} from "./Window";
 import {memoizeMethodWithKey} from "../../../utils/memoize";
 
 interface WindowListProps {
-    windowList: WindowListState,
+    windowList: WindowListState;
     dispatch: Dispatch<any>;
 }
 

@@ -45,10 +45,11 @@ export class AppComponent extends React.Component<AppProps, {}> {
         return (
             <div className="wm-window-manager"
                  onMouseMove={this.onMouseEvent}
-                 onMouseUp={this.onMouseEvent}>
+                 onMouseUp={this.onMouseEvent}
+                 data-container-name="desktop">
                 <IconList iconList={iconList} container="desktop" dispatch={dispatch} />
                 <WindowList windowList={windowList} dispatch={dispatch} />
-                <GhostIcon icon={iconList.ghostIcon} />
+                <GhostIcon icon={iconList.ghostIcon} visible={iconList.ghostIconVisible} />
             </div>
         );
     }

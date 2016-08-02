@@ -22,7 +22,7 @@ export class Window extends React.Component<WindowProps, void> {
         super(props);
         this.onWindowDragStart = this.onWindowDragStart.bind(this);
         this.onWindowClose = this.onWindowClose.bind(this);
-        this.onWindowContentMouseDown = this.onWindowContentMouseDown.bind(this);
+        this.onWindowContentClick = this.onWindowContentClick.bind(this);
         for(var i = 0; i < 8; i++) {
             this.onWindowResizeStart[i] = this.onWindowResizeStartFn.bind(this, i);
         }
@@ -57,7 +57,7 @@ export class Window extends React.Component<WindowProps, void> {
         this.props.dispatch(resizeWindow(this.props.windowId, side, pos, size, event));
     }
     onWindowResizeStart: ((event:__React.MouseEvent) => any)[] = [];
-    onWindowContentMouseDown() {
+    onWindowContentClick() {
         let {isFocused, dispatch, windowId} = this.props;
         if(!isFocused) {
             dispatch(activateWindow(windowId));
@@ -65,8 +65,8 @@ export class Window extends React.Component<WindowProps, void> {
     }
 
     @memoizeMethod
-    renderContent(Component: any) {
-        return <div className="wm-window-content">{Component && <Component />}</div>;
+    renderContent(Component: any, componentArgs: any) {
+        return <div className="wm-window-content">{Component && <Component {...componentArgs} />}</div>;
     }
     @memoizeMethod
     renderTitleBar(title: string) {
@@ -90,7 +90,7 @@ export class Window extends React.Component<WindowProps, void> {
     }
 
     render() {
-        let {pos, componentType, title, size} = this.props.window;
+        let {pos, componentType, componentArgs, title, size} = this.props.window;
         let Component = windowContentTypes[componentType];
 
         let className = this.props.isFocused ? "wm-window wm-window-focus" : "wm-window";
@@ -99,9 +99,9 @@ export class Window extends React.Component<WindowProps, void> {
             {this.renderLeftCol()}
             <div className="wm-window-col wm-window-center">
                 <div className="wm-window-cell wm-window-top" onMouseDown={this.onWindowResizeStart[ResizeSide.T]} />
-                <div className="wm-window-cell wm-window-middle" onMouseDown={this.onWindowContentMouseDown}>
+                <div className="wm-window-cell wm-window-middle" onClick={this.onWindowContentClick}>
                     {this.renderTitleBar(title)}
-                    {this.renderContent(Component)}
+                    {this.renderContent(Component, componentArgs)}
                 </div>
                 <div className="wm-window-cell wm-window-bottom" onMouseDown={this.onWindowResizeStart[ResizeSide.B]} />
             </div>

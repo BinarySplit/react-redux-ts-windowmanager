@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export let AboutThisSiteComponent = () => (<div>
+export default () => (<div>
     <p>This is a practice project for React/Redux/TypeScript.</p>
     <p>What should work:</p>
     <ul>
