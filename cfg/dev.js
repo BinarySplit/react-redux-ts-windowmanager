@@ -16,9 +16,7 @@ let config = Object.assign({}, baseConfig, {
       'webpack/hot/only-dev-server',
       './src/index',
     ],
-    "icon-images": [
-      './src/styles/IconImages.less'
-    ]
+    "icon-images": ['./src/images/IconImages.less']
   },
   cache: true,
   devtool: 'source-map',

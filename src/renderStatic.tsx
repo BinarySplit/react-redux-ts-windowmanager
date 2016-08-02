@@ -2,10 +2,10 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as ReactDOMServer from "react-dom/server";
 import { Provider } from 'react-redux';
-import { configureStore } from './stores';
-import App from './containers/App';
+import App from './app/App';
+import {configureStore} from "./app/appStore";
 
-function render (locals, callback) {
+function render (locals:any, callback:any) {
     const store = configureStore();
     let app = ReactDOMServer.renderToString(
         <Provider store={store}>
@@ -44,4 +44,4 @@ function render (locals, callback) {
     callback(null, html);
     return html;
 }
-module.exports = render;
+export default render;

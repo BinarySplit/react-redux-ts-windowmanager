@@ -1,5 +1,5 @@
-import {isDragWindowAction, isResizeWindowAction, ResizeSide} from "../actions/Window";
-import {DRAG} from "../actions/Drag";
+import {isDragWindowAction, isResizeWindowAction, ResizeSide} from "./windowActions";
+import {DRAG} from "../Drag/dragActions";
 
 export const enum WindowVisibility { Normal, Maximized, Minimized }
 
@@ -11,7 +11,7 @@ export interface WindowState {
     size: [number, number]
 }
 
-export function WindowReducer(state:WindowState, action:any):WindowState {
+export function windowReducer(state:WindowState, action:any):WindowState {
     switch(action.type) {
         case DRAG:{
             if(isDragWindowAction(action)) {

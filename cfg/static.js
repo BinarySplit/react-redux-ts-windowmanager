@@ -10,7 +10,7 @@ let StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
 let BowerWebpackPlugin = require('bower-webpack-plugin');
 
 let config = Object.assign({}, baseConfig, {
-    entry: {'static': './src/renderStatic'},
+    entry: {'static': './src/renderStatic.tsx'},
     cache: true,
     output: {
         path: path.join(__dirname, '/../dist'),

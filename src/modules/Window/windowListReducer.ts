@@ -1,6 +1,6 @@
 import {Action} from "redux/index";
-import {isWindowAction, OPEN_WINDOW, CreateWindowAction, CLOSE_WINDOW, WindowAction} from "../actions/Window";
-import {WindowState, WindowReducer, WindowVisibility} from "./WindowReducer";
+import {isWindowAction, OPEN_WINDOW, CreateWindowAction, CLOSE_WINDOW, WindowAction} from "./windowActions";
+import {WindowState, windowReducer, WindowVisibility} from "./windowReducer";
 
 export interface WindowFocusAction {
     actionId: number, //not meaningful. Just a field that reliably changes every time a new action is "fired"
@@ -64,7 +64,7 @@ function activateWindow(state: WindowListState, windowId: number): WindowListSta
     });
 }
 
-export function WindowListReducer(state: WindowListState = initialState, action:Action) {
+export function windowListReducer(state: WindowListState = initialState, action:Action) {
 
     switch(action.type) {
         case OPEN_WINDOW: {
@@ -120,7 +120,7 @@ export function WindowListReducer(state: WindowListState = initialState, action:
                 let w = state.windowsById[action.windowId];
                 if(w != null) {
                     let newWindowsById = state.windowsById.slice();
-                    newWindowsById[action.windowId] = WindowReducer(w, action);
+                    newWindowsById[action.windowId] = windowReducer(w, action);
 
                     return activateWindow(Object.assign({}, state, {
                             windowsById: newWindowsById

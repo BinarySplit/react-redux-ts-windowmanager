@@ -1,5 +1,5 @@
 import {Action} from "redux/index";
-import {DragAction, DRAG_START, DRAG_END} from "../actions/Drag";
+import {DragAction, DRAG_START, DRAG_END} from "./dragActions";
 
 export interface DragParams {
     dragType: string,

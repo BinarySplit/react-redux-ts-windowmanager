@@ -1,5 +1,5 @@
 import {Action} from "redux/index";
-import {DragParams} from "../reducers/DragReducer";
+import {DragParams} from "./dragReducer";
 
 
 export const DRAG_START = "DRAG_START";

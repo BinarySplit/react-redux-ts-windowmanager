@@ -1,8 +1,5 @@
 import {Action} from "redux/index";
-import {DragAction, DRAG_START, DRAG, DRAG_END, dragStart} from "./Drag";
-
-let _uniqueIdCounter = 1;
-export function makeUniqueId(): number { return _uniqueIdCounter++ }
+import {DragAction, DRAG_START, DRAG, DRAG_END, dragStart} from "../Drag/dragActions";
 
 //Consts
 export const OPEN_WINDOW = "OPEN_WINDOW";
@@ -15,7 +12,7 @@ export const ACTIVATE_WINDOW = "ACTIVATE_WINDOW";
 export interface WindowAction extends Action {
     windowId: number
 }
-export interface CreateWindowAction extends WindowAction {
+export interface CreateWindowAction extends Action {
     componentType: string,
     title: string
 }
@@ -35,7 +32,7 @@ export type ResizeWindowAction = DragAction & WindowAction & ResizeWindowActionA
 
 //Action Creators
 export function createWindow(componentType: string, title: string): CreateWindowAction {
-    return {type: OPEN_WINDOW, windowId: makeUniqueId(), componentType, title};
+    return {type: OPEN_WINDOW, componentType, title};
 }
 export function closeWindow(windowId: number): WindowAction {
     return {type: CLOSE_WINDOW, windowId};

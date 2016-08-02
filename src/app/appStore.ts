@@ -1,5 +1,5 @@
 import * as redux from 'redux';
-import {combinedReducer, MainState} from '../reducers';
+import {combinedReducer, MainState} from './appReducer';
 import {Reducer, Store} from "redux/index";
 import {debounceReduxUpdate} from "../utils/debounceReduxUpdate";
 
@@ -10,11 +10,11 @@ export function configureStore(state?: MainState):Store<MainState> {
 
     if (module.hot) {
         // Enable Webpack hot module replacement for reducers
-        module.hot.accept('../reducers', () => {
-            const nextReducer = require('../reducers');
+        module.hot.accept('./appReducer', () => {
+            const nextReducer = require('./appReducer');
             store.replaceReducer(nextReducer as Reducer<MainState>)
         })
     }
 
-    return debounceReduxUpdate(store)
+    return debounceReduxUpdate(store);
 }

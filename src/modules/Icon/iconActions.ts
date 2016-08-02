@@ -1,4 +1,4 @@
-import {DragAction, dragStart, DRAG, DRAG_START, DRAG_END} from "./Drag";
+import {DragAction, dragStart, DRAG, DRAG_START, DRAG_END} from "../Drag/dragActions";
 import {Action} from "redux/index";
 
 //Consts

@@ -1,22 +1,13 @@
 import * as React from "react";
 import {Action} from "redux/index";
-import "styles/Window.less";
-import {dragWindow, ResizeSide, resizeWindow, closeWindow, activateWindow} from "../actions/Window";
+import "../windowStyle.less";
+import {dragWindow, ResizeSide, resizeWindow, closeWindow, activateWindow} from "../windowActions";
 import * as shallowCompare from "react-addons-shallow-compare";
-import {memoizeMethod} from "../utils/memoize";
-import {WindowState} from "../reducers/WindowReducer";
-import {AboutThisSiteComponent} from "./AboutThisSite";
-import ComponentClass = __React.ComponentClass;
-import SFC = __React.SFC;
-import ClassType = __React.ClassType;
-import {connect} from "react-redux";
-import {MainState} from "../reducers/index";
+import {memoizeMethod} from "../../../utils/memoize";
+import {WindowState} from "../windowReducer";
 import {TitleBar} from "./TitleBar";
+import {windowContentTypes} from "../../WindowContent/index";
 
-
-let components: {[key:string]: ComponentClass<any> | SFC<any> | ClassType<any, any, any>}  = {
-    AboutThisSite: AboutThisSiteComponent
-};
 
 interface WindowProps {
     windowId: number;
@@ -25,7 +16,7 @@ interface WindowProps {
     dispatch: (a:Action) => Action;
 }
 
-export default class Window extends React.Component<WindowProps, void> {
+export class Window extends React.Component<WindowProps, void> {
     displayName: "Window";
     constructor(props: WindowProps) {
         super(props);
@@ -100,7 +91,7 @@ export default class Window extends React.Component<WindowProps, void> {
 
     render() {
         let {pos, componentType, title, size} = this.props.window;
-        let Component = components[componentType];
+        let Component = windowContentTypes[componentType];
 
         let className = this.props.isFocused ? "wm-window wm-window-focus" : "wm-window";
 

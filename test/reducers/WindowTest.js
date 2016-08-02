@@ -1,4 +1,4 @@
-var reducer = require('../../src/reducers/WindowReducer');
+var reducer = require('.././windowReducer');
 
 describe('Window', () => {
 

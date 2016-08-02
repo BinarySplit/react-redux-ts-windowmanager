@@ -1,9 +1,9 @@
-import {IconState} from "../reducers/IconListReducer";
+import {IconState} from "./iconListReducer";
 import * as React from "react";
-import 'styles/Icon.less'
+import './iconStyles.less'
 import {Action} from "redux/index";
-import {moveIcon} from "../actions/Icon";
-import {createWindow} from "../actions/Window";
+import {moveIcon} from "./iconActions";
+import {createWindow} from "../Window/windowActions";
 
 interface IconProps {
     icon: IconState,

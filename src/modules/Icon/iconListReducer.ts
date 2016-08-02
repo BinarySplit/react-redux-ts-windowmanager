@@ -1,6 +1,6 @@
 import {Action} from "redux/index";
-import {DRAG_START, DRAG, DRAG_END} from "../actions/Drag";
-import {isMoveIconAction} from "../actions/Icon";
+import {DRAG_START, DRAG, DRAG_END} from "../Drag/dragActions";
+import {isMoveIconAction} from "./iconActions";
 
 //Coordinates for the middle of the icon
 const iconMidWidth = 48;

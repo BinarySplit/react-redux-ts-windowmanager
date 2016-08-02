@@ -1,13 +1,13 @@
 
 import {ReducersMapObject, Reducer, combineReducers} from 'redux';
-import './WindowReducer'
-import {WindowListReducer, WindowListState} from './WindowListReducer'
-import {DragParams, DragReducer} from "./DragReducer";
-import {IconListReducer, IconListState} from "./IconListReducer";
+import '../modules/Window/windowReducer'
+import {windowListReducer, WindowListState} from '../modules/Window/windowListReducer'
+import {DragParams, DragReducer} from "../modules/Drag/dragReducer";
+import {IconListReducer, IconListState} from "../modules/Icon/iconListReducer";
 
 const reducers:ReducersMapObject = {
     dragParams: DragReducer,
-    windowList: WindowListReducer,
+    windowList: windowListReducer,
     iconList: IconListReducer
 };
 
