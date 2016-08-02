@@ -5,10 +5,11 @@ let _uniqueIdCounter = 1;
 export function makeUniqueId(): number { return _uniqueIdCounter++ }
 
 //Consts
-export const CREATE_WINDOW = "CREATE_WINDOW";
+export const OPEN_WINDOW = "OPEN_WINDOW";
 export const CLOSE_WINDOW = "CLOSE_WINDOW";
 export const DRAG_WINDOW = "DRAG_WINDOW";
 export const RESIZE_WINDOW = "RESIZE_WINDOW";
+export const ACTIVATE_WINDOW = "ACTIVATE_WINDOW";
 
 //Types
 export interface WindowAction extends Action {
@@ -34,7 +35,7 @@ export type ResizeWindowAction = DragAction & WindowAction & ResizeWindowActionA
 
 //Action Creators
 export function createWindow(componentType: string, title: string): CreateWindowAction {
-    return {type: CREATE_WINDOW, windowId: makeUniqueId(), componentType, title};
+    return {type: OPEN_WINDOW, windowId: makeUniqueId(), componentType, title};
 }
 export function closeWindow(windowId: number): WindowAction {
     return {type: CLOSE_WINDOW, windowId};
@@ -48,6 +49,9 @@ export function resizeWindow(windowId: number,
                              initialWindowSize: [number, number],
                              event: __React.MouseEvent): ResizeWindowAction {
     return dragStart(event, RESIZE_WINDOW, {windowId, side, initialWindowPos, initialWindowSize});
+}
+export function activateWindow(windowId: number): WindowAction {
+    return {type: ACTIVATE_WINDOW, windowId};
 }
 //Utils
 export function isWindowAction(action: Action): action is WindowAction {

@@ -2,6 +2,7 @@
   position:absolute;
   width: 96px;
   height: 128px;
+  user-select: none;
 
   &-image {
     position:absolute;
@@ -17,7 +18,7 @@
     width: 96px;
     height: 32px;
     line-height: 16px;
-    text-overflow: ellipsis;
+    //text-overflow: ellipsis;
     overflow: hidden;
     text-align: center;
   }
@@ -26,4 +27,11 @@
     opacity: 0.5; //TODO: Dither?
     pointer-events: none;
   }
+
+  &:focus { outline: none; }
+  &:focus &-title-text {
+    color: #FFFFFF;
+    background-color: #0000C0;
+  }
+
 }

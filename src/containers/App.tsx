@@ -6,7 +6,6 @@ import Main from './WindowManager';
 export default class App extends Component<{},{}> {
     static propTypes = {};
     render() {
-        let foo = this;
         return <Main />;
     }
 }

@@ -30,9 +30,12 @@ export class Icon extends React.Component<IconProps, {}> {
         return <div className="wm-icon"
                     style={{left: pos[0], top: pos[1]}}
                     onMouseDown={this.onMouseDown}
-                    onDoubleClick={this.onDoubleClick}>
+                    onDoubleClick={this.onDoubleClick}
+                    tabIndex="-1">
             <div className={"wm-icon-image " + imageClass} />
-            <div className="wm-icon-title">{title}</div>
+            <div className="wm-icon-title">
+                <span className="wm-icon-title-text">{title}</span>
+            </div>
         </div>;
     }
 }

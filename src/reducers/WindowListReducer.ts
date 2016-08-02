@@ -1,5 +1,5 @@
 import {Action} from "redux/index";
-import {isWindowAction, CREATE_WINDOW, CreateWindowAction, CLOSE_WINDOW, WindowAction} from "../actions/Window";
+import {isWindowAction, OPEN_WINDOW, CreateWindowAction, CLOSE_WINDOW, WindowAction} from "../actions/Window";
 import {WindowState, WindowReducer, WindowVisibility} from "./WindowReducer";
 
 export type WindowListState = WindowState[]; //Ordered from back to front
@@ -43,20 +43,35 @@ let initialWindows:WindowState[] = [
 
 export function WindowListReducer(state: WindowListState = initialWindows, action:Action) {
     switch(action.type) {
-        case CREATE_WINDOW: {
+        case OPEN_WINDOW: {
+            //TODO: move windows list to state.windowsById, state.windowOrder
+            //TODO: store nextWindowId in state
+
             let {windowId, componentType, title} = action as CreateWindowAction;
-            let newWindow:WindowState = {
-                windowId, componentType, title,
-                visibility: WindowVisibility.Normal,
-                pos: [0,0],
-                size: [400,300]
-            };
-            return state.concat(newWindow);
+            let idx = state.findIndex(w => w.componentType == componentType);
+            if(idx != -1) {
+                if (idx == state.length - 1) {
+                    return state;
+                } else {
+                    var newState = state.slice();
+                    var item = newState.splice(idx, 1)[0];
+                    newState.push(item);
+                    return newState;
+                }
+            } else {
+                let newWindow:WindowState = {
+                    windowId, componentType, title,
+                    visibility: WindowVisibility.Normal,
+                    pos: [0, 0],
+                    size: [400, 300]
+                };
+                return state.concat(newWindow);
+            }
         }
         case CLOSE_WINDOW: {
             let closeAction = action as WindowAction;
 
-            let newList = state.slice(0);
+            let newList = state.slice();
             let idx = newList.findIndex(w => w.windowId == closeAction.windowId);
             if(idx == -1) throw new Error("Invalid windowId in action:" + JSON.stringify(action));
             newList.splice(idx, 1);

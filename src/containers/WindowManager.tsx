@@ -50,8 +50,8 @@ class WindowManagerComponent extends React.Component<WindowManagerProps, {}> {
         this.props.dispatch(createWindow("", "Title"));
     }
     @memoizeMethodWithKey
-    renderWindow(key: string, window: WindowState) {
-        return <Window key={key} window={window} dispatch={this.props.dispatch} />;
+    renderWindow(key: string, window: WindowState, isTopmost: Boolean) {
+        return <Window key={key} window={window} isTopmost={isTopmost} dispatch={this.props.dispatch} />;
     }
     @memoizeMethodWithKey
     renderIcon(key: string, icon: IconState) {
@@ -59,6 +59,7 @@ class WindowManagerComponent extends React.Component<WindowManagerProps, {}> {
     }
     render() {
         let {windows, iconList} = this.props;
+        let topWindowIdx = windows.length - 1;
         return (
             <div className="wm-window-manager"
                  onMouseMove={this.onMouseEvent}
@@ -72,7 +73,7 @@ class WindowManagerComponent extends React.Component<WindowManagerProps, {}> {
                     {iconList.ghostIcon && this.renderIcon("ghost", iconList.ghostIcon)}
                 </div>
                 <div id="windows">
-                    {windows.map((w) => this.renderWindow(w.windowId.toString(), w))}
+                    {windows.map((w, i) => this.renderWindow(w.windowId.toString(), w, i == topWindowIdx))}
                 </div>
             </div>
         );

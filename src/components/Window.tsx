@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Action} from "redux/index";
 import "styles/Window.less";
-import {dragWindow, ResizeSide, resizeWindow, closeWindow} from "../actions/Window";
+import {dragWindow, ResizeSide, resizeWindow, closeWindow, activateWindow} from "../actions/Window";
 import * as shallowCompare from "react-addons-shallow-compare";
 import {memoize, memoizeMethod} from "../utils/memoize";
 import {WindowState} from "../reducers/WindowReducer";
@@ -12,6 +12,7 @@ import ClassType = __React.ClassType;
 
 interface WindowProps {
     window: WindowState,
+    isTopmost: Boolean,
     dispatch: (a:Action) => Action
 }
 
@@ -32,12 +33,10 @@ class TitleBar extends React.Component<TitleBarProps, void> {
     render() {
         let {title, onDragStart, onClose} = this.props;
         return <div className="wm-window-titlebar">
+            <div className="wm-window-button-close" onClick={onClose} />
             <div className="wm-window-title" onMouseDown={onDragStart}>{title}</div>
-            <div className="wm-window-buttons">
-                <div className="wm-window-button-minimize" />
-                <div className="wm-window-button-maximize" />
-                <div className="wm-window-button-close" onClick={onClose} />
-            </div>
+            <div className="wm-window-button-minimize" />
+            <div className="wm-window-button-maximize" />
         </div>
     }
 }
@@ -85,7 +84,10 @@ export default class Window extends React.Component<WindowProps, void> {
     }
     onWindowResizeStart: ((event:__React.MouseEvent) => any)[] = [];
     onWindowContentMouseDown() {
-        //TODO: Activate window if needed
+        let {isTopmost, dispatch, window} = this.props;
+        if(!isTopmost) {
+            dispatch(activateWindow(window.windowId));
+        }
     }
 
     @memoizeMethod
