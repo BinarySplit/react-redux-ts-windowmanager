@@ -1,6 +1,4 @@
-
 import {ReducersMapObject, Reducer, combineReducers} from 'redux';
-import '../modules/Window/windowReducer'
 import {windowListReducer, WindowListState} from '../modules/Window/windowListReducer'
 import {DragParams, DragReducer} from "../modules/Drag/dragReducer";
 import {IconListReducer, IconListState} from "../modules/Icon/iconListReducer";

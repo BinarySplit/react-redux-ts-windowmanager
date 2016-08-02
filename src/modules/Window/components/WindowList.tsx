@@ -11,7 +11,7 @@ interface WindowListProps {
     dispatch: Dispatch<any>;
 }
 
-export class WindowList extends React.Component<WindowListProps, void> {
+export default class WindowList extends React.Component<WindowListProps, void> {
 
     shouldComponentUpdate(nextProps:WindowListProps, nextState:void) {
         return shallowCompare(this, nextProps, nextState);

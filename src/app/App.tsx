@@ -8,9 +8,10 @@ import {DragParams} from "../modules/Drag/dragReducer";
 import {MainState} from "../app/appReducer";
 import {drag, dragEnd} from "../modules/Drag/dragActions";
 import {IconState, IconListState} from "../modules/Icon/iconListReducer";
-import {Icon} from "../modules/Icon/Icon";
 import {WindowListState} from "../modules/Window/windowListReducer";
-import {WindowList} from "../modules/Window/components/WindowList";
+import WindowList from "../modules/Window/components/WindowList";
+import IconList from "../modules/Icon/components/IconList";
+import GhostIcon from "../modules/Icon/components/GhostIcon";
 
 
 interface AppProps {
@@ -39,25 +40,15 @@ export class AppComponent extends React.Component<AppProps, {}> {
             event.preventDefault();
         }
     }
-    @memoizeMethodWithKey
-    renderIcon(key: string, icon: IconState) {
-        return <Icon key={key} icon={icon} dispatch={this.props.dispatch} />
-    }
     render() {
-        let {windowList, iconList} = this.props;
+        let {windowList, iconList, dispatch} = this.props;
         return (
             <div className="wm-window-manager"
                  onMouseMove={this.onMouseEvent}
                  onMouseUp={this.onMouseEvent}>
-                <div id="icons">
-                    {iconList.icons
-                        .filter(i => i.container == "desktop")
-                        .map(i => this.renderIcon(i.iconId.toString(), i))}
-                </div>
-                <WindowList windowList={windowList} dispatch={this.props.dispatch} />
-                <div id="ghostIcon">
-                    {iconList.ghostIcon && this.renderIcon("ghost", iconList.ghostIcon)}
-                </div>
+                <IconList iconList={iconList} container="desktop" dispatch={dispatch} />
+                <WindowList windowList={windowList} dispatch={dispatch} />
+                <GhostIcon icon={iconList.ghostIcon} />
             </div>
         );
     }

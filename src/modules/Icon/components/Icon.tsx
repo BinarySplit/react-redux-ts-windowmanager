@@ -1,16 +1,16 @@
-import {IconState} from "./iconListReducer";
+import {IconState} from "../iconListReducer";
 import * as React from "react";
-import './iconStyles.less'
+import '../iconStyles.less'
 import {Action} from "redux/index";
-import {moveIcon} from "./iconActions";
-import {createWindow} from "../Window/windowActions";
+import {moveIcon} from "../iconActions";
+import {createWindow} from "../../Window/windowActions";
 
 interface IconProps {
     icon: IconState,
     dispatch: (a:Action) => Action; //Workaround for WebStorm error highlighting bug https://youtrack.jetbrains.com/issue/WEB-22374
 }
 
-export class Icon extends React.Component<IconProps, {}> {
+export default class Icon extends React.Component<IconProps, {}> {
     constructor(props:IconProps) {
         super(props);
         this.onMouseDown = this.onMouseDown.bind(this);
