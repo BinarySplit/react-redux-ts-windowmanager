@@ -2,7 +2,7 @@ import 'normalize.css/normalize.css';
 import '../styles/App.css';
 import * as React from 'react';
 import {connect} from "react-redux";
-import {Action} from "redux/index";
+import {Action, Dispatch} from "redux/index";
 import {createWindow} from "../actions/Window";
 import Window from "../components/Window";
 import {memoizeMethodWithKey, memoizeMethod} from "../utils/memoize";
@@ -11,16 +11,40 @@ import {MainState} from "../reducers/index";
 import {drag, dragEnd} from "../actions/Drag";
 import {IconState, IconListState} from "../reducers/IconListReducer";
 import {Icon} from "../components/Icon";
+import {WindowListState} from "../reducers/WindowListReducer";
+import {WindowState} from "../reducers/WindowReducer";
+import * as shallowCompare from "react-addons-shallow-compare";
 
+interface WindowsProps {
+    windowList: WindowListState,
+    dispatch: Dispatch<any>;
+}
 
+class WindowsList extends React.Component<WindowsProps, void> {
 
+    shouldComponentUpdate(nextProps:WindowsProps, nextState:void) {
+        return shallowCompare(this, nextProps, nextState);
+    }
+    @memoizeMethodWithKey
+    renderWindow(key: string, windowId: number, window: WindowState, isFocused: Boolean) {
+        return <Window key={key} windowId={windowId} window={window} isFocused={isFocused} dispatch={this.props.dispatch} />;
+    }
+    render() {
+        let {windowOrder, windowsById, focusedWindowId} = this.props.windowList;
+        return <div className="wm-windows-list">
+            {windowOrder.map(windowId => {
+                let window = windowsById[windowId];
+                return window && this.renderWindow(windowId.toString(), windowId, window, windowId == focusedWindowId)
+            })}
+        </div>;
+    }
+}
 
 interface WindowManagerProps {
-    windowOrder: number[];
-    focusedWindowId: number;
+    windowList: WindowListState;
     iconList: IconListState;
     dragParams: DragParams;
-    dispatch: (a:Action) => Action; //Workaround for WebStorm error highlighting bug https://youtrack.jetbrains.com/issue/WEB-22374
+    dispatch: Dispatch<any>; //Workaround for WebStorm error highlighting bug https://youtrack.jetbrains.com/issue/WEB-22374
 }
 
 class WindowManagerComponent extends React.Component<WindowManagerProps, {}> {
@@ -28,7 +52,6 @@ class WindowManagerComponent extends React.Component<WindowManagerProps, {}> {
     constructor(props:WindowManagerProps) {
         super(props);
         this.onMouseEvent = this.onMouseEvent.bind(this);
-        this.onCreateWindow = this.onCreateWindow.bind(this);
     }
     onMouseEvent(event:__React.MouseEvent) {
         let {dragParams, dispatch} = this.props;
@@ -43,25 +66,12 @@ class WindowManagerComponent extends React.Component<WindowManagerProps, {}> {
             event.preventDefault();
         }
     }
-    onCreateWindow(event:__React.MouseEvent) {
-        if(typeof event.button === "number" && event.button > 0) return;
-
-        this.props.dispatch(createWindow("", "Title"));
-    }
-    @memoizeMethodWithKey
-    renderWindow(key: string, windowId: number, isFocused: Boolean) {
-        return <Window key={key} windowId={windowId} isFocused={isFocused} />;
-    }
-    @memoizeMethod
-    renderWindows(windowOrder: number[], focusedWindowId: number) {
-        return windowOrder.map(windowId => this.renderWindow(windowId.toString(), windowId, windowId == focusedWindowId));
-    }
     @memoizeMethodWithKey
     renderIcon(key: string, icon: IconState) {
         return <Icon key={key} icon={icon} dispatch={this.props.dispatch} />
     }
     render() {
-        let {windowOrder, focusedWindowId, iconList} = this.props;
+        let {windowList, iconList} = this.props;
         return (
             <div className="wm-window-manager"
                  onMouseMove={this.onMouseEvent}
@@ -71,9 +81,7 @@ class WindowManagerComponent extends React.Component<WindowManagerProps, {}> {
                         .filter(i => i.container == "desktop")
                         .map(i => this.renderIcon(i.iconId.toString(), i))}
                 </div>
-                <div id="windows">
-                    {this.renderWindows(windowOrder, focusedWindowId)}
-                </div>
+                <WindowsList windowList={windowList} dispatch={this.props.dispatch} />
                 <div id="ghostIcon">
                     {iconList.ghostIcon && this.renderIcon("ghost", iconList.ghostIcon)}
                 </div>
@@ -83,8 +91,8 @@ class WindowManagerComponent extends React.Component<WindowManagerProps, {}> {
 }
 export default
 connect(
-    function ({windowList: {windowOrder, focusedWindowId}, iconList, dragParams}:MainState, ownProps:{}):{} {
-        return {windowOrder, focusedWindowId, iconList, dragParams};
+    function ({windowList, iconList, dragParams}:MainState, ownProps:{}):{} {
+        return {windowList, iconList, dragParams};
     },
     null
 )(WindowManagerComponent);

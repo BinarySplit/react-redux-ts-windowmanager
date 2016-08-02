@@ -18,19 +18,14 @@ let components: {[key:string]: ComponentClass<any> | SFC<any> | ClassType<any, a
     AboutThisSite: AboutThisSiteComponent
 };
 
-interface PropsFromParent {
+interface WindowProps {
     windowId: number;
-    isFocused: Boolean;
-}
-
-interface PropsFromConnect {
     window: WindowState;
+    isFocused: Boolean;
     dispatch: (a:Action) => Action;
 }
 
-type WindowProps = PropsFromParent & PropsFromConnect;
-
-class Window extends React.Component<WindowProps, void> {
+export default class Window extends React.Component<WindowProps, void> {
     displayName: "Window";
     constructor(props: WindowProps) {
         super(props);
@@ -123,9 +118,3 @@ class Window extends React.Component<WindowProps, void> {
         </div>);
     }
 }
-
-export default connect(
-    function({windowList: {windowsById}}: MainState, {windowId}: PropsFromParent) {
-        return {window: windowsById[windowId]};
-    }, null
-)(Window);

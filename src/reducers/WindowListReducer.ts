@@ -71,7 +71,7 @@ export function WindowListReducer(state: WindowListState = initialState, action:
 
             let {componentType, title} = action as CreateWindowAction;
             //Check if window already exists - if so, activate existing window. Otherwise open new window.
-            let existingWindowId = state.windowsById.findIndex(w => w.componentType == componentType);
+            let existingWindowId = state.windowsById.findIndex(w => w != null && w.componentType == componentType);
             if(existingWindowId != -1) {
                 return activateWindow(state, existingWindowId);
             } else {
