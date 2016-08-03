@@ -12,8 +12,7 @@ let BowerWebpackPlugin = require('bower-webpack-plugin');
 
 let config = Object.assign({}, baseConfig, {
   entry: {
-    app: ['./src/index'],
-    "icon-images": ['./src/images/IconImages.less']
+    app: ['./src/index']
   },
   cache: false,
   devtool: false, //'source-map',

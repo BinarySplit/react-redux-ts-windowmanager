@@ -17,14 +17,14 @@ module.exports = {
   output: {
     path: path.join(__dirname, '/../dist/assets'),
     filename: '[name].js',
-    publicPath: defaultSettings.publicPath
+    publicPath: '/assets/'
   },
   devServer: {
     contentBase: './src/',
     historyApiFallback: true,
     hot: true,
-    port: defaultSettings.port,
-    publicPath: "/",
+    port: 8000,
+    publicPath: '/assets/',
     noInfo: false,
     stats: {
       colors: true,

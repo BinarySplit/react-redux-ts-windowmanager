@@ -25,7 +25,6 @@ function render (locals:any, callback:any) {
 <body>
   <div id="app">${app}</div>
 
-  <script>__REACT_DEVTOOLS_GLOBAL_HOOK__ = parent.__REACT_DEVTOOLS_GLOBAL_HOOK__</script>
   <!-- Dependencies -->
   <script type="text/javascript" src="assets/react.js" defer></script>
   <script type="text/javascript" src="assets/react-dom.js" defer></script>

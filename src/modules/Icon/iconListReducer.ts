@@ -1,6 +1,6 @@
 import {Action} from "redux/index";
 import {DRAG_START, DRAG, DRAG_END} from "../Drag/dragActions";
-import {isMoveIconAction} from "./iconActions";
+import {isMoveIconAction, MoveIconAction} from "./iconActions";
 
 //Coordinates for the middle of the icon
 const iconMidWidth = 48;
@@ -88,7 +88,7 @@ const initialState: IconListState = {
 
 export function IconListReducer(state: IconListState = initialState, action: Action): IconListState {
     if (isMoveIconAction(action)) {
-        let icon = state.icons.filter(i => i.iconId == action.iconId)[0];
+        let icon = state.icons.filter(i => i.iconId == (action as MoveIconAction).iconId)[0];
         if (icon != null) {
             switch (action.type) {
                 case DRAG_START:

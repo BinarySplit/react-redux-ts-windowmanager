@@ -26,9 +26,9 @@ function buildConfig(wantedEnv) {
   let isValid = wantedEnv && wantedEnv.length > 0 && allowedEnvs.indexOf(wantedEnv) !== -1;
   let validEnv = isValid ? wantedEnv : 'dev';
   return [
-    require(path.join(__dirname, 'cfg/' + validEnv)),
-    require(path.join(__dirname, 'cfg/static'))
-  ];
+      require(path.join(__dirname, 'cfg/' + validEnv)),
+      require(path.join(__dirname, 'cfg/static'))
+    ];
 }
 
 module.exports = buildConfig(env);

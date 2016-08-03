@@ -4,9 +4,8 @@ import {Dispatch} from "redux/index";
 import IconList from "../../Icon/components/IconList";
 import {connect} from "react-redux";
 import {MainState} from "../../../app/appReducer";
-import {WindowListState} from "../../Window/windowListReducer";
-import WindowList from "../../Window/components/WindowList";
 import {windowContentTypes} from "../index";
+import "../styles/folder.less";
 
 
 interface FolderPropsFromParent {

@@ -12,11 +12,10 @@ let BowerWebpackPlugin = require('bower-webpack-plugin');
 let config = Object.assign({}, baseConfig, {
   entry: {
     app: [
-      'webpack-dev-server/client?http://127.0.0.1:' +defaultSettings.port,
+      'webpack-dev-server/client?http://127.0.0.1:' + baseConfig.devServer.port,
       'webpack/hot/only-dev-server',
       './src/index',
-    ],
-    "icon-images": ['./src/images/IconImages.less']
+    ]
   },
   cache: true,
   devtool: 'source-map',

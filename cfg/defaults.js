@@ -9,7 +9,6 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const srcPath = path.join(__dirname, '/../src');
-const dfltPort = 8000;
 
 /**
  * Get the default modules object for webpack
@@ -23,15 +22,15 @@ function getDefaultModules(additionalPaths, isDev) {
         },
         {
             test: /\.css$/,
-            // loader: isDev
-            //     ? 'style-loader!css-loader'
-            loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+            loader: isDev
+                ? 'style-loader!css-loader'
+                : ExtractTextPlugin.extract("style-loader", "css-loader")
         },
         {
             test: /\.less$/,
-            // loader: isDev
-            //     ? 'style-loader!css-loader!less-loader'
-            loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
+            loader: isDev
+                ? 'style-loader!css-loader!less-loader'
+                : ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
         },
         {
             test: /\.(png|jpg|gif|woff|woff2|svg)$/,
@@ -42,7 +41,7 @@ function getDefaultModules(additionalPaths, isDev) {
             loader: isDev ? 'react-hot!babel-loader' : 'babel',
             include: [].concat(
                 additionalPaths,
-                [ path.join(__dirname, '/../src') ]
+                [ srcPath ]
             )
         }
     ];
@@ -64,7 +63,5 @@ function getDefaultModules(additionalPaths, isDev) {
 
 module.exports = {
     srcPath: srcPath,
-    publicPath: '/assets/',
-    port: dfltPort,
     getDefaultModules: getDefaultModules
 };

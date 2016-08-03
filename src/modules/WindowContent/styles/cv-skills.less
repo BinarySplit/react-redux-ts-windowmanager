@@ -1,0 +1,50 @@
+@tileWidth: 100px;
+@tileHeight: 50px;
+@tileBorderWidth: 4px;
+@tileInnerWidth: (@tileWidth - 2 * @tileBorderWidth);
+@tileInnerHeight: (@tileHeight - 2 * @tileBorderWidth);
+
+.cv-skills {
+  background-color: #c0c0c0;
+  position: absolute;
+  width: 100%;
+  min-height: 100%;
+  white-space: nowrap;
+}
+.cv-skills-tiles {
+  width: 100px;
+  height: 400px;
+  display: inline-block;
+}
+
+.cv-skills-tree {
+  width: 100px;
+  height: 400px;
+  display: inline-block;
+}
+
+.cv-skills-tile {
+  position: absolute;
+  width: @tileInnerWidth;
+  border: @tileBorderWidth outset #4040ff;
+  background-color: #4040ff;
+  text-align: center;
+  vertical-align: center;
+  -webkit-user-select: none;
+  user-select: none;
+
+  &-text {
+    display: inline-block;
+    line-height: 1.15em;
+    vertical-align: middle;
+  }
+
+  &:hover {
+    background-color: #6060ff;
+    border-style: outset;
+  }
+  &:active {
+    background-color: #6060ff;
+    border-style: inset;
+  }
+}

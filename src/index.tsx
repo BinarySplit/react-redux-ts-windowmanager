@@ -25,8 +25,9 @@ render(
 
 //Defer loading icon images until page has rendered
 var loadDeferredCss = function() {
-    var l = document.createElement('link'); l.rel = 'stylesheet';
-    l.href = 'assets/icon-images.css';
+    var l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = require('!file?name=icon-images.css!less!./images/icon-images.less') as string;
     var h = document.getElementsByTagName('head')[0]; h.parentNode.insertBefore(l, h);
 };
 if (window.requestAnimationFrame) {

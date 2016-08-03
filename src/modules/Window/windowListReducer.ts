@@ -13,13 +13,6 @@ export type WindowListState = WindowListStateFields & {};
 const initialState: WindowListState = {
     windowsById: [
         {
-            componentType: "",
-            title: "Foo Bar",
-            visibility: WindowVisibility.Normal,
-            pos: [200, 100],
-            size: [400, 300]
-        },
-        {
             componentType: "AboutThisSite",
             title: "About this site",
             visibility: WindowVisibility.Normal,
@@ -32,6 +25,13 @@ const initialState: WindowListState = {
             title: "Welcome",
             visibility: WindowVisibility.Normal,
             pos: [300, 200],
+            size: [400, 300]
+        },
+        {
+            componentType: "CVSkills",
+            title: "Skills",
+            visibility: WindowVisibility.Normal,
+            pos: [200, 100],
             size: [400, 300]
         },
     ],
