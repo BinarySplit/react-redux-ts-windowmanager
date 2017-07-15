@@ -16,7 +16,7 @@ export interface DragAction extends Action {
     containerPos: [number, number]
 }
 
-/*reduced interface from MouseEvent / __React.MouseEvent exposing only the needed fields*/
+/*reduced interface from MouseEvent / React.MouseEvent<HTMLElement> exposing only the needed fields*/
 export interface MouseEventForDrag {
     pageX: number;
     pageY: number;

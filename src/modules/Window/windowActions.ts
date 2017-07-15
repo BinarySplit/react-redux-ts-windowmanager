@@ -38,14 +38,14 @@ export function createWindow(componentType: string, componentArgs: any, title: s
 export function closeWindow(windowId: number): WindowAction {
     return {type: CLOSE_WINDOW, windowId};
 }
-export function dragWindow(windowId: number, initialWindowPos: [number, number], event: __React.MouseEvent): DragWindowAction {
+export function dragWindow(windowId: number, initialWindowPos: [number, number], event: React.MouseEvent<HTMLElement>): DragWindowAction {
     return dragStart(event, DRAG_WINDOW, {windowId, initialWindowPos});
 }
 export function resizeWindow(windowId: number,
                              side: ResizeSide,
                              initialWindowPos: [number, number],
                              initialWindowSize: [number, number],
-                             event: __React.MouseEvent): ResizeWindowAction {
+                             event: React.MouseEvent<HTMLElement>): ResizeWindowAction {
     return dragStart(event, RESIZE_WINDOW, {windowId, side, initialWindowPos, initialWindowSize});
 }
 export function activateWindow(windowId: number): WindowAction {

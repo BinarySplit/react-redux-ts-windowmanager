@@ -16,7 +16,7 @@ export interface SelectIconAction extends Action {
 }
 
 //Action Creators
-export function moveIcon(iconId: number, initialPos: [number, number], event: __React.MouseEvent): MoveIconAction {
+export function moveIcon(iconId: number, initialPos: [number, number], event: React.MouseEvent<HTMLElement>): MoveIconAction {
     return dragStart(event, MOVE_ICON, {iconId, initialPos});
 }
 

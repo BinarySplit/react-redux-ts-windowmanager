@@ -2,7 +2,6 @@ import * as React from "react";
 import {Action} from "redux/index";
 import "../windowStyle.less";
 import {dragWindow, ResizeSide, resizeWindow, closeWindow, activateWindow} from "../windowActions";
-import * as shallowCompare from "react-addons-shallow-compare";
 import {memoizeMethod} from "../../../utils/memoize";
 import {WindowState} from "../windowReducer";
 import {TitleBar} from "./TitleBar";
@@ -16,7 +15,7 @@ interface WindowProps {
     dispatch: (a:Action) => Action;
 }
 
-export class Window extends React.Component<WindowProps, void> {
+export class Window extends React.PureComponent<WindowProps, {}> {
     displayName: "Window";
     constructor(props: WindowProps) {
         super(props);
@@ -28,19 +27,16 @@ export class Window extends React.Component<WindowProps, void> {
         }
     }
 
-    shouldComponentUpdate(nextProps:WindowProps, nextState:void) {
-        return shallowCompare(this, nextProps, nextState);
-    }
     static absolutePosition(pos:[number,number], size:[number,number]) {
         return {
-            position: "absolute",
+            position: ("absolute" as "absolute"), // wtf typescript?
             left: pos[0],
             top: pos[1],
             width: size[0],
             height: size[1]
         };
     }
-    onWindowDragStart(event:__React.MouseEvent) {
+    onWindowDragStart(event:React.MouseEvent<HTMLElement>) {
         if(typeof event.button === "number" && event.button > 0) return;
 
         let {windowId, window} = this.props;
@@ -50,13 +46,13 @@ export class Window extends React.Component<WindowProps, void> {
     onWindowClose() {
         this.props.dispatch(closeWindow(this.props.windowId));
     }
-    onWindowResizeStartFn(side:ResizeSide, event:__React.MouseEvent) {
+    onWindowResizeStartFn(side:ResizeSide, event:React.MouseEvent<HTMLElement>) {
         if(typeof event.button === "number" && event.button > 0) return;
 
         let {pos, size} = this.props.window;
         this.props.dispatch(resizeWindow(this.props.windowId, side, pos, size, event));
     }
-    onWindowResizeStart: ((event:__React.MouseEvent) => any)[] = [];
+    onWindowResizeStart: ((event:React.MouseEvent<HTMLElement>) => any)[] = [];
     onWindowContentClick() {
         let {isFocused, dispatch, windowId} = this.props;
         if(!isFocused) {

@@ -16,13 +16,13 @@ export default class Icon extends React.Component<IconProps, {}> {
         this.onMouseDown = this.onMouseDown.bind(this);
         this.onDoubleClick = this.onDoubleClick.bind(this);
     }
-    onMouseDown(event: __React.MouseEvent) {
+    onMouseDown(event: React.MouseEvent<HTMLElement>) {
         if(typeof event.button === "number" && event.button > 0) return;
 
         let {iconId, pos} = this.props.icon;
         this.props.dispatch(moveIcon(iconId, pos, event));
     }
-    onDoubleClick(event: __React.MouseEvent) {
+    onDoubleClick(event: React.MouseEvent<HTMLElement>) {
         if(typeof event.button === "number" && event.button > 0) return;
 
         let {title, componentType, componentArgs} = this.props.icon;
@@ -35,7 +35,7 @@ export default class Icon extends React.Component<IconProps, {}> {
                     style={{left: pos[0], top: pos[1]}}
                     onMouseDown={this.onMouseDown}
                     onDoubleClick={this.onDoubleClick}
-                    tabIndex="-1">
+                    tabIndex={-1}>
             <div className={"wm-icon-image " + imageClass} />
             <div className="wm-icon-title">
                 <span className="wm-icon-title-text">{title}</span>

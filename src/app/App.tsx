@@ -27,7 +27,7 @@ export class AppComponent extends React.Component<AppProps, {}> {
         super(props);
         this.onMouseEvent = this.onMouseEvent.bind(this);
     }
-    onMouseEvent(event:__React.MouseEvent) {
+    onMouseEvent(event:React.MouseEvent<HTMLElement>) {
         let {dragParams, dispatch} = this.props;
         //An event with the coordinates of the top of the browser's UI window ([0, -30]) is created
         // right before dragend if drag events haven't had their default prevented, or the browser is lagging

@@ -1,4 +1,3 @@
-import * as shallowCompare from "react-addons-shallow-compare";
 import * as React from "react";
 import {Dispatch} from "redux/index";
 import {memoizeMethodWithKey} from "../../../utils/memoize";
@@ -11,11 +10,7 @@ interface IconListProps {
     dispatch: Dispatch<any>;
 }
 
-export default class IconList extends React.Component<IconListProps, void> {
-    shouldComponentUpdate(nextProps:IconListProps, nextState:void) {
-        return shallowCompare(this, nextProps, nextState);
-    }
-
+export default class IconList extends React.PureComponent<IconListProps, {}> {
     @memoizeMethodWithKey
     renderIcon(key: string, icon: IconState, isSelected: Boolean) {
         return <Icon key={key} icon={icon} dispatch={this.props.dispatch} />

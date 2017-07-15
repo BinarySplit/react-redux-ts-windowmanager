@@ -9,12 +9,5 @@
     "target": "es6",
     "jsx": "react",
     "experimentalDecorators": true
-  },
-  "exclude": [
-    "node_modules"
-  ],
-  "files": [
-    "typings/index.d.ts",
-    "require.d.ts"
-  ]
+  }
 }

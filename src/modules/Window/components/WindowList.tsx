@@ -1,4 +1,3 @@
-import * as shallowCompare from "react-addons-shallow-compare";
 import * as React from "react";
 import {Dispatch} from "redux/index";
 import {WindowListState} from "../windowListReducer";
@@ -11,11 +10,7 @@ interface WindowListProps {
     dispatch: Dispatch<any>;
 }
 
-export default class WindowList extends React.Component<WindowListProps, void> {
-
-    shouldComponentUpdate(nextProps:WindowListProps, nextState:void) {
-        return shallowCompare(this, nextProps, nextState);
-    }
+export default class WindowList extends React.PureComponent<WindowListProps, {}> {
     @memoizeMethodWithKey
     renderWindow(key: string, windowId: number, window: WindowState, isFocused: Boolean) {
         return <Window key={key} windowId={windowId} window={window} isFocused={isFocused} dispatch={this.props.dispatch} />;

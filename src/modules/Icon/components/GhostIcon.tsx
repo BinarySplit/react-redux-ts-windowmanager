@@ -1,4 +1,3 @@
-import * as shallowCompare from "react-addons-shallow-compare";
 import * as React from "react";
 import {IconState} from "../iconListReducer";
 import Icon from "./Icon";
@@ -8,11 +7,7 @@ interface GhostIconProps {
     visible: Boolean;
 }
 
-export default class GhostIcon extends React.Component<GhostIconProps, void> {
-    shouldComponentUpdate(nextProps:GhostIconProps, nextState:void) {
-        return shallowCompare(this, nextProps, nextState);
-    }
-
+export default class GhostIcon extends React.PureComponent<GhostIconProps, {}> {
     render() {
         let {icon, visible} = this.props;
         return <div id="ghostIcon">

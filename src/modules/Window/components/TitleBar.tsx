@@ -1,16 +1,12 @@
 import * as React from "react";
-import * as shallowCompare from "react-addons-shallow-compare";
 
 interface TitleBarProps {
     title: string;
-    onDragStart: __React.MouseEventHandler;
+    onDragStart: React.MouseEventHandler<HTMLElement>;
     onClose: ()=>any;
 }
 
-export class TitleBar extends React.Component<TitleBarProps, void> {
-    shouldComponentUpdate(nextProps:TitleBarProps, nextState:void) {
-        return shallowCompare(this, nextProps, nextState);
-    }
+export class TitleBar extends React.PureComponent<TitleBarProps, {}> {
     render() {
         let {title, onDragStart, onClose} = this.props;
         return <div className="wm-window-titlebar">
